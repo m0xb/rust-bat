@@ -27,6 +27,7 @@ fn main() {
     let ret = match section.as_ref() {
         "warmup-1" => match bat_name.as_ref() {
             "sleepIn" => run_bat!(warmup_1::sleep_in, args[3], args[4]),
+            "diff21" => run_bat!(warmup_1::diff21, args[3]),
             _ => panic!(format!("Unknown bat: {}", bat_name)),
         },
         "string-2" => match bat_name.as_ref() {
