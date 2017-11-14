@@ -1,0 +1,6 @@
+[package]
+name = "rust-bat"
+version = "0.1.0"
+authors = ["Steven Mitchell <mitchellxb@gmail.com>"]
+
+[dependencies]
