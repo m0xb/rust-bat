@@ -32,6 +32,7 @@ fn main() {
         },
         "string-2" => match bat_name.as_ref() {
             "doubleChar" => run_bat!(string_2::double_char, args[3]),
+            "xyBalance"  => run_bat!(string_2::xy_balance, args[3]),
             _ => panic!(format!("Unknown bat: {}", bat_name)),
         },
         _ => panic!(format!("Unknown section: {}", section)),
