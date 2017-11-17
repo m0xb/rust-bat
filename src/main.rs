@@ -2,6 +2,11 @@ use std::env;
 
 mod warmup_1;
 mod string_2;
+mod monkeyTrouble;
+mod sumDouble;
+mod icyHot;
+mod loneTeen;
+mod delDel;
 
 macro_rules! run_bat {
     ( $fn:path, $( $x:expr ),* ) => {{
@@ -34,6 +39,26 @@ fn main() {
             "doubleChar" => run_bat!(string_2::double_char, args[3]),
             "xyBalance"  => run_bat!(string_2::xy_balance, args[3]),
             _ => panic!(format!("Unknown bat: {}", bat_name)),
+        },
+        "monkeyTrouble" => match bat_name.as_ref() {
+            "monkey_trouble" => run_bat!(monkeyTrouble::monkey_trouble, args[3], args[4]),
+            _ => panic!(format!("Unknown bat: {}", bat_name)),
+        },
+        "sumDouble" => match bat_name.as_ref() {
+            "sumDouble" => run_bat!(sumDouble::sumDouble, args[3], args[4]),
+            _ => panic!(format!("Unknown bat: {}", bat_name)),
+        },
+        "icyHot" => match bat_name.as_ref() {
+            "icyHot" => run_bat!(icyHot::icyHot, args[3], args[4]),
+            _ => panic!(format!("Unknown bat: {}", bat_name)),
+        },
+        "loneTeen" => match bat_name.as_ref() {
+            "loneTeen" => run_bat!(loneTeen::loneTeen, args[3], args[4]),
+            _ => panic!(format!("Unknown bat: {}", bat_name)),
+        },
+        "delDel" => match bat_name.as_ref() {
+            "delDel" => run_bat!(delDel::delDel, args[3]),
+            _ => panic!("Unknwon bat: {}", bat_name),
         },
         _ => panic!(format!("Unknown section: {}", section)),
     };
