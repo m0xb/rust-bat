@@ -17,6 +17,19 @@ fn main() {
     println!("{}", delDel(s.to_string()));
 }
 
+mod tests {
+    use super::*;
+    #[test]
+
+    fn test_delDel() {
+        let s = vec!["hdelello", "hhdelhello", "del", "hdel", "hDel"];
+        assert_eq!("hello", delDel(s[0].to_string()));
+        assert_eq!("hhdelhello", delDel(s[1].to_string()));
+        assert_eq!("del", delDel(s[2].to_string()));
+        assert_eq!("h", delDel(s[3].to_string()));
+        assert_eq!("hDel", delDel(s[4].to_string()));
+    }
+}
 
     
         

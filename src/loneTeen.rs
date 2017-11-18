@@ -13,3 +13,18 @@ fn main() {
     println!("{}", loneTeen(21, 21));
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_loneTeen() {
+        assert_eq!(true, loneTeen(14, 21));
+        assert_eq!(true, loneTeen(21, 14));
+        assert_eq!(false, loneTeen(14, 14));
+        assert_eq!(false, loneTeen(21, 21));
+        assert_eq!(false, loneTeen(21, -13));
+        assert_eq!(true, loneTeen(-13, 13));
+        assert_eq!(true, loneTeen(13, 20));
+    }
+}
+

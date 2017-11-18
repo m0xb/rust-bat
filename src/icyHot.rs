@@ -12,4 +12,20 @@ fn main() {
     println!("{}", icyHot(0, 0));
     println!("{}", icyHot(120, -1));
 } 
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_icyHot() {
+        assert_eq!(false, icyHot(32, 120));
+        assert_eq!(true, icyHot(-1, 120));
+        assert_eq!(false, icyHot(0, 0));
+        assert_eq!(true, icyHot(120, -1));
+    }
+}
+
+  
+
         
