@@ -12,6 +12,7 @@ cargo run sumDouble sumDouble 6 6
 cargo run icyHot icyHot 101 -1
 cargo run loneTeen loneTeen 13 20
 cargo run delDel delDel hdelhello
+cargo run sumHeighs2 sumHeights2 [5, 3, 6, 7, 2], 0, 4
 
 ```
 

@@ -7,7 +7,8 @@ mod sumDouble;
 mod icyHot;
 mod loneTeen;
 mod delDel;
-
+mod copyEndy;
+//mod sumHeights2;
 macro_rules! run_bat {
     ( $fn:path, $( $x:expr ),* ) => {{
         println!("{}", stringify!($fn));
@@ -60,6 +61,15 @@ fn main() {
             "delDel" => run_bat!(delDel::delDel, args[3]),
             _ => panic!("Unknwon bat: {}", bat_name),
         },
+        "copyEndy" => match bat_name.as_ref() {
+            "copyEndy" => run_bat!(copyEndy::copyEndy, args[3]),
+            _ => panic!("Unknown bat: {}", bat_name),
+        },
+        //"sumHeights2" => match bat_name.as_ref() {
+        //    "sumHeights2" => run_bat!(sumHeights2::sumHeights2, args[3], args[4], args[5]),
+        //    _ => panic!("Unkown bat: {}", bat_name),
+        //},
+
         _ => panic!(format!("Unknown section: {}", section)),
     };
 
@@ -102,6 +112,15 @@ impl ParsedArg for bool {
 impl ParsedArg for String {
     fn from_str(s: &str) -> Result<Self, String> {
         return Ok(s.into());
+    }
+}
+
+impl ParsedArg for Vec<i32> {
+    fn from_str(s: &str) -> Result<Self, String> {
+        return match s.parse() {
+            Ok(b) => Ok(b),
+            Err(e) => Err(format!("Can't parse {:?} as Vec: {}", s, e)),
+        }
     }
 }
 
