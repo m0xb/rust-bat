@@ -5,27 +5,18 @@ fn commonTwo(list1: Vec<char>, list2: Vec<char>) -> i32 {
     let mut i = 0;
     let mut j = 0;
     let mut common = 0;
-    if l1_len == 1 && l2_len == 1 {
-        if list1[0] == list2[0] { 
+    while i < l1_len && j < l2_len {
+        if list1[i] > list2[j] {
+            j += 1;
+        } 
+        else if list1[i] < list2[j] {
+            i += 1;
+        } else {
             common += 1;
-        }
-    } else {
-        while i < l1_len && j < l2_len {
-            if list1[i] > list2[j] {
-                j += 1;
-            } 
-            if list1[i] < list2[j] {
+            let temp_str = list1[i];
+            while (i < l1_len && j < l2_len) && list1[i] == list2[j] && list1[i] == temp_str {
                 i += 1;
-            } else {
-                common += 1;
-                let temp_str = list1[i];
-                while list1[i] == list2[j] && (i < l1_len && j < l2_len) && list1[i] == temp_str {
-                    i += 1;
-                    j += 1;
-                    if i == l1_len || j == l2_len {
-                        break;
-                    }
-                }
+                j += 1;
             }
         }
     }
