@@ -89,7 +89,6 @@ fn extraFront(s: String) -> String {
     }
 }
 
-
 fn startWord(s: String, word: String) -> String {
     let mut new_s = String::from("");
     if s.len() >= word.len() && (word.len() < 2 || &s[1..word.len()] == &word[1..]) {
@@ -98,8 +97,97 @@ fn startWord(s: String, word: String) -> String {
     }
     return new_s;
 }
-    
-  
+
+fn makeAbba(a: String, b: String) -> String {
+    let mut abba = String::from("");
+    abba += &a.to_string();
+    abba += &b.to_string();
+    abba += &b.to_string();
+    abba += &a.to_string();
+    return abba;
+}
+
+fn extraEnd(s: String) -> String {
+    let mut new_s = String::with_capacity(6);
+    for i in 0..3 {
+        new_s += &s[(s.len() - 2)..s.len()];
+    }
+    return new_s;
+}
+
+fn withoutEnd(mut s: String) -> String {
+    s.remove(0);
+    s.pop();
+    return s;
+}
+
+fn left2(mut s: String) -> String {
+    s += &s[0..2].to_string();
+    s.remove(0);
+    s.remove(0);
+    return s;
+}
+
+fn withouEnd2(mut s: String) -> String {
+    if s.len() > 0 {
+        s.remove(0);
+    }
+    s.pop();
+    return s;
+}
+
+fn nTwice(s: String, n: i32) -> String {
+    let mut new_s = String::from("");
+    new_s.push_str(&s[0..(n as usize)]);
+    new_s.push_str(&s[(s.len() - (n as usize))..s.len()]);
+    return new_s;
+}
+
+fn hasBad(s: String) -> bool {
+    if s.len() > 2 && &s[0..3] == "bad" || s.len() > 3 && &s[1..4] == "bad" {
+        return true;
+    }
+    return false;
+}
+
+fn conCat(a: String, b: String) -> String {
+    let mut new_s = String::from("");
+    new_s.push_str(&a.to_string());
+    new_s.push_str(&b.to_string());
+    if a.len() > 0 && b.len() > 0 && &a[(a.len()-1)..(a.len())] == &b[0..1] {
+        new_s.remove(a.len() - 1);
+        return new_s;
+    }
+    return new_s;
+}
+
+fn frontAgain(s: String) -> bool {
+    if s.len() > 1 && &s[0..2] == &s[(s.len() - 2)..(s.len())] {
+        return true;
+    }
+    return false;
+}
+
+fn without2(mut s: String) -> String {
+    if s.len() > 1 && &s[0..2] == &s[(s.len() - 2)..(s.len())] {
+        s.remove(0);
+        s.remove(0);
+    }
+    return s;
+}
+
+fn withoutX(mut s: String) -> String {
+    if s.len() > 0 {
+        if s.chars().nth(0).unwrap() == 'x' {
+            s.remove(0);
+        } 
+        if s.len() > 0 && s.chars().nth(s.len() - 1).unwrap() == 'x' {
+            s.pop();
+        }
+    }
+    return s;
+}
+
 fn main() {
     let helloName_tests = vec![
         "Bob",
@@ -274,6 +362,174 @@ fn main() {
     for i in startWord_test {
         println!("startWord: {}", startWord(i.0.to_string(), i.1.to_string()));
     }
+    
+    println!("\n");
+
+    let makeAbba_tests = vec![
+        ("Hi", "Bye"),
+        ("Yo", "Alice"),
+        ("What", "Up"),
+        ("aaa", "bbb"),
+        ("x", "y"),
+        ("x", ""),
+        ("", "y"),
+        ("Bo", "Ya"),
+        ("Ya", "Ya")];
+    for i in makeAbba_tests {
+        println!("makeAbba: {}", makeAbba(i.0.to_string(), i.1.to_string()));
+    }
+    
+    println!("\n");
+
+    let extraEnd_tests = vec![
+        "Hello",
+        "ab",
+        "Hi",
+        "Candy",
+        "Code"];
+    for i in extraEnd_tests {
+        println!("extraEnd: {}", extraEnd(i.to_string()));
+    }
+    
+    println!("\n");
+
+    let withoutEnd_tests = vec![
+        "Hello",
+        "java",
+        "code",
+        "ab",
+        "Chocolate!",
+        "kitten",
+        "woohoo"];
+    for i in withoutEnd_tests {
+        println!("withoutEnd: {}", withoutEnd(i.to_string()));
+    }
+    
+    println!("\n");
+
+    let left2_tests = vec![
+        "Hello",
+        "java",
+        "Hi",
+        "code",
+        "cat",
+        "12345",
+        "Chocolate",
+        "bricks"];
+    for i in left2_tests {
+        println!("left2: {}", left2(i.to_string()));
+    }
+
+        println!("\n");
+
+    let withoEnd2_tests = vec![
+        "Hello",
+        "abc",
+        "ab",
+        "a",
+        "",
+        "coldy",
+        "java code"];
+    for i in withoEnd2_tests {
+        println!("withouEnd2: {}", withouEnd2(i.to_string()));
+    }
+
+    println!("\n");
+
+    let nTwice_tests = vec![
+        ("Hello", 2),
+        ("Chocolate", 3),
+        ("Chocolate", 1),
+        ("Chocolate", 0),
+        ("Hello", 4),
+        ("Code", 4),
+        ("Code", 4)];
+    for i in nTwice_tests {
+        println!("nTwice: {}", nTwice(i.0.to_string(), i.1));
+    }
+
+    println!("\n");
+
+    let hasBad_tests = vec![
+        "badxx",
+        "xbadxx",
+        "xxbadxx",
+        "code",
+        "bad",
+        "ba",
+        "xba",
+        "xbad",
+        "",
+        "badyy"];
+    for i in hasBad_tests {
+        println!("hasBad: {}", hasBad(i.to_string()));
+    }
+    
+    println!("\n");
+
+    let conCat_tests = vec![
+        ("abc", "cat"),
+        ("dog", "cat"),
+        ("abc", ""),
+        ("pig", "g"),
+        ("pig", "doggy")];
+    for i in conCat_tests {
+        println!("conCat: {}", conCat(i.0.to_string(), i.1.to_string()));
+    }
+
+    println!("\n");
+
+    let frontAgain_tests = vec![
+        "edited",
+        "edit",
+        "ed",
+        "jj",
+        "jjj",
+        "jjjj",
+        "jjjk",
+        "x",
+        "",
+        "java",
+        "javaja"];
+    for i in frontAgain_tests {
+        println!("frontAgain: {}", frontAgain(i.to_string()));
+    }
+
+    println!("\n");
+
+    let without2_tests = vec![
+        "HelloHe",
+        "HelloHi",
+        "Hi",
+        "Chocolate",
+        "xxx",
+        "xx",
+        "x",
+        "",
+        "Fruits"];
+    for i in without2_tests {
+        println!("without2: {}", without2(i.to_string()));
+    }
+    
+    println!("\n");
+
+    let withoutX_tests = vec![
+        "xHix",
+        "xHi",
+        "Hxix",
+        "Hi",
+        "xxHi",
+        "Hix",
+        "xaxbx",
+        "xx",
+        "x",
+        "",
+        "Hello",
+        "Hexllo"];
+    for i in withoutX_tests {
+        println!("withoutX: {}", withoutX(i.to_string()));
+    }
+
 
 }
 
