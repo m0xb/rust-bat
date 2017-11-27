@@ -7,7 +7,7 @@ mod sumDouble;
 mod icyHot;
 mod loneTeen;
 mod delDel;
-mod copyEndy;
+//mod copyEndy;
 //mod sumHeights2;
 macro_rules! run_bat {
     ( $fn:path, $( $x:expr ),* ) => {{
@@ -16,11 +16,11 @@ macro_rules! run_bat {
             println!("    --> {:?}", $x);
         )*
 
-        $fn(
+        format!("{:?}", $fn(
         $(
             Arg{raw: &$x}.parse().unwrap_or_else(|e| panic!(e)),
         )*
-        ).to_string()
+        ))
     }};
 }
 
@@ -61,10 +61,10 @@ fn main() {
             "delDel" => run_bat!(delDel::delDel, args[3]),
             _ => panic!("Unknwon bat: {}", bat_name),
         },
-        "copyEndy" => match bat_name.as_ref() {
-            "copyEndy" => run_bat!(copyEndy::copyEndy, args[3]),
-            _ => panic!("Unknown bat: {}", bat_name),
-        },
+//        "copyEndy" => match bat_name.as_ref() {
+//            "copyEndy" => run_bat!(copyEndy::copyEndy, args[3]),
+//            _ => panic!("Unknown bat: {}", bat_name),
+ //       },
         //"sumHeights2" => match bat_name.as_ref() {
         //    "sumHeights2" => run_bat!(sumHeights2::sumHeights2, args[3], args[4], args[5]),
         //    _ => panic!("Unkown bat: {}", bat_name),
@@ -117,10 +117,11 @@ impl ParsedArg for String {
 
 impl ParsedArg for Vec<i32> {
     fn from_str(s: &str) -> Result<Self, String> {
-        return match s.parse() {
+    unimplemented!("");
+        /*       return match s.parse() {
             Ok(b) => Ok(b),
             Err(e) => Err(format!("Can't parse {:?} as Vec: {}", s, e)),
-        }
-    }
+   }
+*/    }
 }
 

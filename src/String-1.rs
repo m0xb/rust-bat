@@ -24,7 +24,7 @@ fn nonStart(a: String, b: String) -> String {
 
 fn theEnd(s: String, b: bool) -> String {
     let mut new_s = String::from("");
-    if b == true {
+    if b {
         new_s.push(s.chars().nth(0).unwrap());
     } else {
         new_s.push(s.chars().nth(s.len() - 1).unwrap());
@@ -273,8 +273,7 @@ fn lastTwo(s: String) -> String {
 fn minCat(mut a: String, mut b: String) -> String {
     let a_len = a.len();
     if a.len() == b.len() {
-        a += &b.to_string();
-        return a;
+        return a + &b;
     } else if a.len() > b.len() {
         a = a[(a.len() - b.len())..a.len()].to_string();
         a += &b.to_string();
@@ -284,6 +283,7 @@ fn minCat(mut a: String, mut b: String) -> String {
         return a;
     }
 }
+
 
 fn deFront(mut s: String) -> String {
     if s.len() > 0 && s.chars().nth(0).unwrap() != 'a' {
