@@ -33,18 +33,13 @@ fn lucky13(array: Vec<i32>) -> bool {
 }
 
 fn fizzArray(n: i32) -> Vec<i32> {
-    let mut array: Vec<i32> = vec![];
-    let mut i = 0;
-    if n == 0 {
-        return array
-    } else {
-        while i < n {
-            array.push(i);
-            i += 1;
-        }
-        return array
+    let mut array: Vec<i32> = Vec::with_capacity(n as usize);
+    for i in 0..n {
+        array.push(i);
     }
-}
+    return array;
+    }
+
 
 fn no14(array: Vec<i32>) -> bool {
     if array.len() < 2 {
@@ -60,17 +55,18 @@ fn no14(array: Vec<i32>) -> bool {
             b = true;
         }
     }
-    return a ^ b
+    return a ^ b;
 }
 
 fn matchUp(nums1: Vec<i32>, nums2: Vec<i32>) -> i32 {
     let mut count = 0;
     for i in 0..nums1.len() {
-        if (nums1[i] - nums2[i]).abs() == 1 || (nums1[i] - nums2[i]).abs() == 2 {
+        let temp = (nums1[i] - nums2[i]).abs();
+        if temp == 1 || temp == 2 {
             count += 1;
         }
     }
-    return count
+    return count;
 }
 
 fn modThree(array: Vec<i32>) -> bool {
@@ -83,7 +79,7 @@ fn modThree(array: Vec<i32>) -> bool {
         }
     return false
 }
-//Adaptation of Greg Orlum's solution.
+//Adaptation of Gregor Ulm's solution.
 fn isEverywhere(array: Vec<i32>, val: i32) -> bool {
     let mut i = 0;
     let mut b1 = true;
@@ -100,27 +96,14 @@ fn isEverywhere(array: Vec<i32>, val: i32) -> bool {
     return b1 || b2
 }
 
-//Refactor
 fn sameEnds(array: Vec<i32>, len: usize) -> bool {
-    let mut start: Vec<i32> = Vec::with_capacity(len);
-    let mut end: Vec<i32> = Vec::with_capacity(len);
-    for i in 0..len {
-        start.push(array[i]);
-    }
-    for i in (array.len() - len)..(array.len()) {
-        end.push(array[i]);
-    }
-    if start != end {
-        return false
-    }
-    return true
+    return &array[0..len] == &array[(array.len() - len)..array.len()]; 
 }
 
-//Try refactoring to use a mutable input array.
 fn shiftLeft(array: Vec<i32>) -> Vec<i32> {
     let a_len = array.len();
-    let mut my_vec: Vec<i32> = Vec::with_capacity(a_len); 
     if a_len > 1 {
+        let mut my_vec: Vec<i32> = Vec::with_capacity(a_len); 
         let left = array[1];
         let right = array[0];
         my_vec.push(left);
@@ -130,43 +113,35 @@ fn shiftLeft(array: Vec<i32>) -> Vec<i32> {
             i += 1;
         }
         my_vec.push(right);
-        return my_vec   
+        return my_vec;   
     }
-    return array
+    return array;
 }
 
 fn post4(array: Vec<i32>) -> Vec<i32> {
-    let mut my_vec: Vec<i32> = Vec::with_capacity(array.len());
     let mut index = array.len() - 1;
     while index > 0 {
         if array[index as usize] == 4 {
             break
         }
         index -= 1;
-    }
-    for j in (index + 1)..array.len() {
-        my_vec.push(array[j]);
-    }
-    return my_vec
+    } 
+    return array[(index + 1)..].to_vec();
 }
 
-//Tried an approach with 'array' as mutable, but couldn't get a for loop to recompute it's range as
-//a function of the decreasing size of 'array.len()' as 10's were removed.  Might refactor if I can
-//figure out how to solve this problem.  
-fn withoutTen(array: Vec<i32>) -> Vec<i32> {
-    let mut my_vec: Vec<i32> = Vec::with_capacity(array.len()); 
-    for i in 0..array.len() {
-        if array[i] != 10 {
-            my_vec.push(array[i]);
+fn withoutTen(mut array: Vec<i32>) -> Vec<i32> {
+    let mut i = 0;
+    while i < array.len() {
+        if array[i] == 10 {
+            array.remove(i);
+            array.push(0);
+        } else {
+            i += 1;
         }
     }
-    for i in my_vec.len()..array.len() {
-        my_vec.push(0);
-    }
-    return my_vec
+    return array;
 }
 
-//ToDo: Refactor to minimize usage of to_string().
 fn fizzBuzz(start: i32, end: i32) -> Vec<String> {
     let mut my_vec: Vec<String> = Vec::with_capacity((end - start) as usize);
     for i in start..end {
@@ -407,7 +382,10 @@ fn main() {
         (vec![2, 1, 2, 1, 1, 2], 2),
         (vec![2, 1, 2, 2, 2, 1, 1, 2], 2),
         (vec![2, 1, 2, 2, 2, 1, 2, 1], 2),
-        (vec![2, 1, 2, 1, 2], 2)];
+        (vec![2, 1, 2, 1, 2], 2),
+        (vec![0, 1, 1, 0, 1, 1, 1], 1),
+        (vec![0, 1, 0, 1, 1, 1, 1], 1),
+        (vec![1, 1, 1], 1)];
     for i in isEverywhere_tests {
         println!("isEverywhere: {}", isEverywhere(i.0, i.1));
     }
