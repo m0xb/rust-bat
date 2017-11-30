@@ -129,7 +129,7 @@ fn post4(array: Vec<i32>) -> Vec<i32> {
     return array[(index + 1)..].to_vec();
 }
 
-fn withoutTen(mut array: Vec<i32>) -> Vec<i32> {
+fn withoutTen(mut array: Vec<i32>) -> Vec<i32> {    
     let mut i = 0;
     while i < array.len() {
         if array[i] == 10 {
@@ -275,6 +275,7 @@ fn notAlone(mut array: Vec<i32>, val: i32) -> Vec<i32> {
     return array;
 }
 
+//Will refactor to not use cmp::max.
 fn zeroMax(mut array: Vec<i32>) -> Vec<i32> {
     for i in 0..array.len() {
         if array[i] == 0 {
@@ -286,6 +287,137 @@ fn zeroMax(mut array: Vec<i32>) -> Vec<i32> {
         }
     }
     return array;
+}
+
+fn centeredAverage(array: Vec<i32>) -> i32 {
+    let mut smallest = array[0];
+    let mut biggest = array[0];
+    let mut sum = 0;
+    let a_len = array.len() as i32;
+    for i in array {
+        if i > biggest {
+            biggest = i;
+        }
+        if i < smallest {
+            smallest = i;
+        }
+        sum += i;
+    }
+    return (sum - biggest - smallest)/(a_len - 2);
+}
+
+fn has22(array: Vec<i32>) -> bool {
+    for i in 0..array.len() {
+        if i + 1 < array.len() && array[i..(i + 2)] == [2, 2] {
+            return true;
+        }
+    }
+    return false;
+}
+
+fn more14(array: Vec<i32>) -> bool {
+    let mut c1 = 0;
+    let mut c4 = 0;
+    for i in array {
+        if i == 1 {
+            c1 += 1;
+        }
+        if i == 4 {
+            c4 += 1;
+        }
+    }
+    return c1 > c4;
+}
+
+//I got fancy with this one.
+fn fizzArray2(n: i32) -> Vec<String> {
+    return (0..n).map(|x| x.to_string()).collect();
+}
+
+fn either24(array: Vec<i32>) -> bool {
+    let mut two2 = false;
+    let mut four4 = false;
+    for i in 0..array.len() {
+        if i + 1 < array.len() {
+            if array[i..(i + 2)] == [2, 2] {
+                two2 = true;
+            }
+            if array[i..(i + 2)] == [4, 4] {
+                four4 = true;
+            }
+        }
+    }
+    return two2 ^ four4;
+}
+
+fn has12(array: Vec<i32>) -> bool {
+    let mut has1 = false;
+    let mut has2 = false;
+    for i in 0..array.len() {
+        if array[i] == 1 {
+            has1 = true;
+            for j in i..array.len() {
+                if array[j] == 2 {
+                    has2 = true;
+                }
+            }
+        }
+    }
+    return has1 && has2;
+}
+
+//This one was tricky.
+fn twoTwo(array: Vec<i32>) -> bool {
+    let mut i = 0 as usize;
+    while i < array.len() {
+        if array[i] == 2 {
+            if i + 1 < array.len() && array[i + 1] == 2 {
+                i += 2;
+            } else {
+                return false;
+            }
+        }
+        i += 1;
+    }
+    return true
+}
+
+fn fizzArray3(start: i32, end: i32) -> Vec<i32> {
+    return (start..end).collect();
+}
+
+fn pre4(mut array: Vec<i32>) -> Vec<i32> {
+    for i in 0..array.len() {
+        if array[i] == 4 {
+            return array[0..i].to_vec();
+        }
+    }
+    return array;
+}
+
+//I feel using insert() might not be very speedy...
+fn zeroFront(mut array: Vec<i32>) -> Vec<i32> {
+    for i in 0..array.len() {
+        if array[i] == 0 {
+            array.remove(i);
+            array.insert(0, 0);
+        }
+    }
+    return array;
+}
+
+fn evenOdd(array: Vec<i32>) -> Vec<i32> {
+    let mut evens: Vec<i32> = Vec::with_capacity(array.len());
+    let mut odds: Vec<i32> = Vec::with_capacity(array.len());
+    for i in 0..array.len() {
+        if array[i] % 2 == 0 {
+            evens.push(array[i]);
+        } else {
+            odds.push(array[i]);
+        }
+    }
+    evens.extend(odds);
+    return evens;
 }
 
 fn main() {
@@ -727,5 +859,213 @@ fn main() {
         vec![7, 0, 1, 0, 0, 7]];
     for i in zeroMax_tests {
         println!("zeroMax: {:?}", zeroMax(i));
+    }
+
+    println!("\n");
+
+    let centeredAverage_tests = vec![
+        vec![1, 2, 3, 4, 100],
+        vec![1, 1, 5, 5, 10, 8, 7],
+        vec![-10, -4, -2, -4, -2, 0],
+        vec![5, 3, 4, 6, 2],
+        vec![5, 3, 4, 0, 100],
+        vec![100, 0, 5, 3, 4],
+        vec![4, 0, 100],
+        vec![0, 2, 3, 4, 100],
+        vec![1, 1, 100],
+        vec![7, 7, 7],
+        vec![1, 7, 8],
+        vec![1, 1, 99, 99],
+        vec![1000, 0, 1, 99],
+        vec![4, 4, 4, 4, 5],
+        vec![4, 4, 4, 1, 5],
+        vec![6, 4, 8, 12, 3]];
+    for i in centeredAverage_tests {
+        println!("centeredAverage: {}", centeredAverage(i));
+    }
+    
+    println!("\n");
+
+    let has22_tests = vec![
+        vec![1, 2, 2],
+        vec![1, 2, 1, 2],
+        vec![2, 1, 2],
+        vec![2, 2, 1, 2],
+        vec![1, 3, 2],
+        vec![1, 3, 2, 2],
+        vec![2, 3, 2, 2],
+        vec![4, 2, 4, 2, 2, 5],
+        vec![1, 2],
+        vec![2, 2],
+        vec![2],
+        vec![],
+        vec![3, 3, 2, 2],
+        vec![5, 2, 5, 2]];
+    for i in has22_tests {
+        println!("has22: {}", has22(i));
+    }
+    
+    println!("\n");
+
+    let more14_tests = vec![
+        vec![1, 4, 1],
+        vec![1, 4, 1, 4],
+        vec![1, 1],
+        vec![1, 6, 6],
+        vec![1],
+        vec![1, 4],
+        vec![6, 1, 1],
+        vec![1, 6, 4],
+        vec![1, 1, 4, 4, 1],
+        vec![1, 1, 6, 4, 4, 1],
+        vec![],
+        vec![4, 1, 4, 6],
+        vec![4, 1, 4, 6, 1],
+        vec![1, 4, 1, 4, 1, 6]];
+    for i in more14_tests {
+        println!("more14: {}", more14(i));
+    }
+
+    println!("\n");
+
+    let fizzArray2_tests = vec![4, 10, 2, 1, 0, 7, 9, 11];
+    for i in fizzArray2_tests {
+        println!("fizzArray2: {:?}", fizzArray2(i));
+    }
+
+    println!("\n");
+
+    let either24_tests = vec![
+        vec![1, 2, 2],
+        vec![4, 4, 1],
+        vec![4, 4, 1, 2, 2],
+        vec![1, 2, 3, 4],
+        vec![3, 5, 9],
+        vec![1, 2, 3, 4, 4],
+        vec![2, 2, 3, 4],
+        vec![1, 2, 3, 2, 2, 4],
+        vec![1, 2, 3, 2, 2, 4, 4],
+        vec![1, 2],
+        vec![2, 2],
+        vec![4, 4],
+        vec![2],
+        vec![]];
+    for i in either24_tests {
+        println!("either24: {}", either24(i));
+    }
+
+    println!("\n");
+
+    let has12_tests = vec![
+        vec![1, 3, 2],
+        vec![3, 1, 2],
+        vec![3, 1, 4, 5, 2],
+        vec![3, 1, 4, 5, 6],
+        vec![3, 1, 4, 1, 6, 2],
+        vec![2, 1, 4, 1, 6, 2],
+        vec![2, 1, 4, 1, 6],
+        vec![1],
+        vec![2, 1, 3],
+        vec![2, 1, 3, 2],
+        vec![2],
+        vec![3, 2],
+        vec![3, 1, 3, 2],
+        vec![3, 5, 9],
+        vec![3, 5, 1],
+        vec![3, 2, 1],
+        vec![1, 2]];
+    for i in has12_tests {
+        println!("has12: {}", has12(i));
+    }
+    
+    println!("\n");
+
+    let twoTwo_tests = vec![
+        vec![4, 2, 2, 3],
+        vec![2, 2, 4],
+        vec![2, 2, 4, 2],
+        vec![1, 3, 4],
+        vec![1, 2, 2, 3, 4],
+        vec![1, 2, 3, 4],
+        vec![2, 2],
+        vec![2, 2, 7],
+        vec![2, 2, 7, 2, 1],
+        vec![4, 2, 2, 2],
+        vec![2, 2, 2],
+        vec![1, 2],
+        vec![2],
+        vec![1],
+        vec![],
+        vec![5, 2, 2, 3],
+        vec![2, 2, 5, 2],
+        vec![2, 2, 5, 2, 2, 2, 5, 2, 2, 5],
+        vec![2, 2, 5, 2, 2, 2, 5, 2, 5],
+        vec![3, 3, 2, 2, 2, 1, 1, 3]];
+    for i in twoTwo_tests {
+        println!("twoTwo: {}", twoTwo(i));
+    }
+
+    println!("\n");
+
+    let fizzArray3_tests = vec![
+        (5, 10),
+        (11, 18),
+        (1, 3),
+        (1, 2),
+        (1, 1),
+        (1000, 1005)];
+    for i in fizzArray3_tests {
+        println!("fizzArray3: {:?}", fizzArray3(i.0, i.1));
+    }
+    
+    println!("\n");
+
+    let pre4_tests = vec![
+        vec![1, 2, 4, 1],
+        vec![3, 1, 4],
+        vec![1, 4, 4],
+        vec![1, 4, 4, 2],
+        vec![1, 3, 4, 2, 4],
+        vec![4, 4],
+        vec![3, 3, 4],
+        vec![1, 2, 1, 4],
+        vec![2, 1, 4, 2],
+        vec![2, 1, 2, 1, 4, 2]];
+    for i in pre4_tests {
+        println!("pre4: {:?}", pre4(i));
+    }
+    
+    println!("\n");
+
+    let zeroFront_tests = vec![
+        vec![1, 0, 0, 1],
+        vec![0, 1, 1, 0, 1],
+        vec![1, 0],
+        vec![0, 1],
+        vec![1, 1, 1, 0],
+        vec![2, 2, 2, 2],
+        vec![0, 0, 1, 0],
+        vec![-1, 0, 0, -1, 0],
+        vec![0, -3, 0, -3],
+        vec![],
+        vec![9, 9, 0, 9, 0, 9]];
+    for i in zeroFront_tests {
+        println!("zeroFront: {:?}", zeroFront(i));
+    }
+    
+    println!("\n");
+
+    let evenOdd_tests = vec![
+        vec![1, 0, 1, 0, 0, 1, 1],
+        vec![3, 3, 2],
+        vec![2, 2, 2],
+        vec![3, 2, 2],
+        vec![1, 1, 0, 1, 0],
+        vec![1],
+        vec![1, 2],
+        vec![2, 1],
+        vec![]];
+    for i in evenOdd_tests {
+        println!("evenOdd: {:?}", evenOdd(i));
     }
 }
