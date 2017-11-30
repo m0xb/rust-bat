@@ -234,6 +234,60 @@ fn haveThree(array: Vec<i32>) -> bool {
     return count == 3
 }
 
+fn tripleUp(array: Vec<i32>) -> bool {
+    if array.len() > 2 {
+        for i in 0..(array.len() - 2) {
+            if array[i] == array[i+1] - 1 && array[i + 1] ==  array[i + 2] - 1 {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+//This would likely be shorter if I didn't make array mutable.
+fn tenRun(mut array: Vec<i32>) -> Vec<i32> {
+    let mut i = 0 as usize;
+    while i < array.len() {
+        if array[i] % 10 == 0 {
+            let temp = array[i];
+            while i + 1 < array.len() && array[i + 1] % 10 != 0 {
+                array[i+1] = temp;
+                i += 1;
+            }
+        }
+        i += 1;
+    }
+    return array;
+}
+
+//Can this be done as simply without using std::cmp?
+use std::cmp;
+fn notAlone(mut array: Vec<i32>, val: i32) -> Vec<i32> {
+    if array.len() > 2 {
+        for i in 1..array.len() {
+            if i + 1 < array.len() && array[i] == val {
+                if array[i] < array[i - 1] || array[i] < array[i + 1] {
+                    array[i] = cmp::max(array[i - 1], array[i + 1]);
+                }
+            }
+        }
+    }
+    return array;
+}
+
+fn zeroMax(mut array: Vec<i32>) -> Vec<i32> {
+    for i in 0..array.len() {
+        if array[i] == 0 {
+            for j in i..array.len() {
+                if array[j] % 2 != 0 {
+                    array[i] = cmp::max(array[i], array[j]);
+                }
+            }
+        }
+    }
+    return array;
+}
+
 fn main() {
     let countEvens_tests = vec![
         vec![2, 1, 2, 3, 4],
@@ -598,5 +652,80 @@ fn main() {
         vec![1]];
     for i in haveThree_tests {
         println!("haveThree: {}", haveThree(i));
+    }
+    
+    println!("\n");
+
+    let tripleUp_tests = vec![
+        vec![1, 4, 5, 6, 2],
+        vec![1, 2, 3],
+        vec![1, 2, 4],
+        vec![1, 2, 4, 5, 7, 6, 5, 6, 7, 6],
+        vec![1, 2, 4, 5, 7, 6, 5, 7, 7, 6],
+        vec![1, 2],
+        vec![1],
+        vec![],
+        vec![10, 9, 8, -100, -99, -98, 100],
+        vec![10, 9, 8, -100, -99, 99, 100],
+        vec![-100, -99, -99, 100, 101, 102],
+        vec![2, 3, 5, 6, 8, 9, 2, 3]];
+    for i in tripleUp_tests {
+        println!("tripleUp: {}", tripleUp(i));
+    }
+    
+    println!("\n");
+
+    let tenRun_tests = vec![
+        vec![2, 10, 3, 4, 20, 5],
+        vec![2, 10, 3, 4, 20, 5, 5],
+        vec![2, 10, 3, 4, 20, 5, 30, 5, 5],
+        vec![10, 1, 20, 2],
+        vec![10, 1, 9, 20],
+        vec![1, 2, 50, 1],
+        vec![1, 20, 50, 1],
+        vec![10, 10],
+        vec![10, 2],
+        vec![0, 0],
+        vec![1, 2],
+        vec![1],
+        vec![]];
+    for i in tenRun_tests {
+        println!("tenRun: {:?}", tenRun(i));
+    }
+    
+    println!("\n");
+
+    let notAlone_tests = vec![
+        (vec![1, 2, 3], 2),
+        (vec![1, 2, 3, 2, 5, 2], 2),
+        (vec![3, 4], 3),
+        (vec![3, 3], 3),
+        (vec![1, 3, 1, 2], 1),
+        (vec![3], 3),
+        (vec![], 3),
+        (vec![7, 1, 6], 1),
+        (vec![1, 1, 1], 1),
+        (vec![1, 1, 1, 2], 1)];
+    for i in notAlone_tests {
+        println!("notAlone: {:?}", notAlone(i.0, i.1));
+    }
+    
+    println!("\n");
+
+    let zeroMax_tests = vec![
+        vec![0, 5, 0, 3],
+        vec![0, 4, 0, 3],
+        vec![0, 1, 0],
+        vec![0, 1, 5],
+        vec![0, 2, 0],
+        vec![1],
+        vec![0],
+        vec![],
+        vec![7, 0, 4, 3, 0, 2],
+        vec![7, 0, 4, 3, 0, 1],
+        vec![7, 0, 4, 3, 0, 0],
+        vec![7, 0, 1, 0, 0, 7]];
+    for i in zeroMax_tests {
+        println!("zeroMax: {:?}", zeroMax(i));
     }
 }
