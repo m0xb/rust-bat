@@ -10,10 +10,7 @@ fn bunnyEars2(bunnies: u32) -> u32 {
     if bunnies == 0 {
           return 0;
     }
-    if bunnies % 2 == 0 {
-        return 3 + bunnyEars2(bunnies - 1)
-    }
-    return 2 + bunnyEars2(bunnies - 1);
+    return 3 - bunnies%2 + bunnyEars2(bunnies - 1);
 }
 
 fn count7(int: u32) -> u32 {
@@ -65,6 +62,104 @@ fn pairStar(s: String) -> String {
             return s[0..1].to_string() + "*" + &pairStar(s[1..s.len()].to_string())
         } else {
             return s[0..1].to_string() + &pairStar(s[1..s.len()].to_string())
+        }
+    } else {
+        return s
+    }
+}
+//This can [very probably] be simplified.
+fn countAbc(s: String) -> u32 {
+    if s.len() > 2 {
+        if s.chars().nth(0).unwrap() == 'a' && s.chars().nth(1).unwrap() == 'b' {
+            if s.chars().nth(2).unwrap() == 'a' {
+                return 1 + &countAbc(s[2..s.len()].to_string())
+            } else if s.chars().nth(2).unwrap() == 'c' {
+                return 1 + &countAbc(s[2..s.len()].to_string())
+            } else {
+                return countAbc(s[3..s.len()].to_string())
+            }
+        } else {
+            return countAbc(s[3..s.len()].to_string())
+        }
+    } else {
+        return 0
+    }
+}
+
+fn countHi2(s: String) -> u32 {
+    if s.len() > 1 {
+        if &s[0..2] == "xh" {
+            return countHi2(s[2..s.len()].to_string())
+        } else if &s[0..2] == "hi" {
+            return 1 + countHi2(s[2..s.len()].to_string())
+        } else {
+            return countHi2(s[1..s.len()].to_string())
+        }
+    } else {
+        return 0
+    }
+}
+
+fn strCount(s: String, sub: String) -> u32 {
+    if s.len() >= sub.len() {
+        if &s[0..sub.len()] == sub {
+            return 1 + strCount(s[sub.len()..s.len()].to_string(), sub)
+        } else {
+            return strCount(s[1..s.len()].to_string(), sub)
+        }
+    } else {
+        return 0
+    }
+}
+
+fn bunnyEars(bunnies: u32) -> u32 {
+    if bunnies > 0 {
+        return 2 + bunnyEars(bunnies - 1)
+    } else {
+        return 0
+    }
+}
+
+fn triangle(rows: u32) -> u32 {
+    if rows > 0 {
+        return 1 + triangle(rows - 1)
+    } else {
+        return 0
+    }
+}
+
+fn count8(num: u32) -> u32 {
+    if num > 0 {
+        if num % 100 == 88 {
+            return 2 + count8(num / 10)
+        } else if num % 10 == 8 {
+            return 1 + count8(num / 10)
+        } else {
+            return count8(num / 10)
+        }
+    } else {
+        return 0
+    }
+}
+
+fn countHi(s: String) -> u32 {
+    if s.len() > 1 {
+        if &s[0..2] == "hi" {
+            return 1 + countHi(s[2..s.len()].to_string())
+        } else {
+            return countHi(s[1..s.len()].to_string())
+        }
+    } else {
+        return 0
+    }
+}
+
+fn noX(s: String) -> String {
+    if s.len() > 0 {
+        if &s[0..1] == "x" {
+            return noX(s[1..s.len()].to_string())
+        } else {
+            return s[0..1].to_string() + &noX(s[1..s.len()].to_string())
         }
     } else {
         return s
@@ -170,4 +265,119 @@ fn main() {
         println!("pairStar: {}", pairStar(i.to_string()));
     }
 
+    println!("\n");
+
+    let countAbc_tests = vec![
+    "abc",
+    "abcxxabc",
+    "abaxxaba",
+    "ababc",
+    "abxbc",
+    "aaabc",
+    "hello",
+    "",
+    "ab",
+    "aba",
+    "aca",
+    "aaa"];
+    for i in countAbc_tests {
+        println!("countAbc: {}", countAbc(i.to_string()));
+    }
+
+    println!("\n");
+
+    let countHi2_tests = vec![
+    "ahixhi",
+    "ahibhi",
+    "xhixhi",
+    "hixhi",
+    "hixhhi",
+    "hihihix",
+    "hihihix",
+    "xhihihix",
+    "xxhi",
+    "hixxhi",
+    "hi",
+    "xxxx",
+    "h",
+    "x",
+    "",
+    "Hellohi"];
+    for i in countHi2_tests {
+        println!("countHi2: {} input: {}", countHi2(i.to_string()), i);
+    }
+
+    println!("\n");
+
+    let strCount_tests = vec![
+    ("catcowcat", "cat"),
+    ("catcowcat", "cow"),
+    ("catcowcat", "dog"),
+    ("cacatcowcat", "cat"),
+    ("xyx", "x"),
+    ("iiiijj", "i"),
+    ("iiiijj", "ii"),
+    ("iiiijj", "iii"),
+    ("iiiijj", "j"),
+    ("iiiijj", "jj"),
+    ("aaabababab", "ab"),
+    ("aaabababab", "aa"),
+    ("aaabababab", "a"),
+    ("aaabababab", "b"),];
+    for i in strCount_tests {
+        println!("strCount: {}", strCount(i.0.to_string(), i.1.to_string()));
+    }
+
+    println!("\n");
+
+    let bunnyEars_tests = vec![0, 1, 2, 3, 4, 5, 12, 50, 234];
+    for i in bunnyEars_tests {
+        println!("bunnyEars: {}", bunnyEars(i));
+    }
+
+    println!("\n");
+
+    let triangle_tests = vec![0, 1, 3, 6, 10, 15, 21, 28];
+    for i in triangle_tests {
+        println!("triangle: {}", triangle(i));
+    }
+
+    println!("\n");
+
+    let count8_tests = vec![8, 818, 8818, 8088, 123, 81238, 88788,
+    8234, 2348, 23884, 0, 1818188, 8818181, 1080, 188, 88888, 9898, 78];
+    for i in count8_tests {
+        println!("count8: {}", count8(i));
+    }
+
+    println!("\n");
+
+    let countHi_tests = vec![
+    "xxhixx",
+    "xhixhix",
+    "hi",
+    "hihih",
+    "h",
+    "",
+    "ihihihihih",
+    "ihihihihihi",
+    "hiAAhi12hi",
+    "xhixhxihihhhih",
+    "ship"];
+    for i in countHi_tests {
+        println!("countHi: {}", countHi(i.to_string()));
+    }
+
+    println!("\n");
+
+    let noX_tests = vec![
+    "xaxb",
+    "abc",
+    "xx",
+    "",
+    "axxbxx",
+    "Hellox"];
+    for i in noX_tests {
+        println!("noX: {}", noX(i.to_string()));
+    }
 }
