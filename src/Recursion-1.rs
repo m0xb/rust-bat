@@ -122,7 +122,7 @@ fn bunnyEars(bunnies: u32) -> u32 {
 
 fn triangle(rows: u32) -> u32 {
     if rows > 0 {
-        return 1 + triangle(rows - 1)
+        return rows + triangle(rows - 1)
     } else {
         return 0
     }
@@ -163,6 +163,18 @@ fn noX(s: String) -> String {
         }
     } else {
         return s
+    }
+}
+
+fn array220(array: Vec<i32>, start_index: usize) -> bool {
+    if start_index + 1 < array.len() {
+        if array[start_index + 1] == 10*array[start_index] {
+            return true
+        } else {
+            return array220(array[(start_index + 1)..array.len()].to_vec(), start_index)
+        }
+    } else {
+        return false
     }
 }
 
@@ -337,7 +349,7 @@ fn main() {
 
     println!("\n");
 
-    let triangle_tests = vec![0, 1, 3, 6, 10, 15, 21, 28];
+    let triangle_tests = vec![0, 1, 2, 3, 4, 5, 6, 7];
     for i in triangle_tests {
         println!("triangle: {}", triangle(i));
     }
@@ -379,5 +391,26 @@ fn main() {
     "Hellox"];
     for i in noX_tests {
         println!("noX: {}", noX(i.to_string()));
+    }
+
+    println!("\n");
+
+    let array220_tests = vec![
+    (vec![1, 2, 20], 0),
+    (vec![3, 30], 0),
+    (vec![3], 0),
+    (vec![], 0),
+    (vec![3, 3, 30, 4], 0),
+    (vec![2, 19, 4], 0),
+    (vec![20, 2, 21], 0),
+    (vec![20, 2, 21, 210], 0),
+    (vec![2, 200, 2000], 0),
+    (vec![0, 0], 0),
+    (vec![1, 2, 3, 4, 5, 6], 0),
+    (vec![1, 2, 3, 4, 5, 50, 6], 0),
+    (vec![1, 2, 3, 4, 5, 51, 6], 0),
+    (vec![1, 2, 3, 4, 4, 50, 500, 6], 0)];
+    for i in array220_tests {
+        println!("array220:  Array: {:?}, Index: {}, Result: {}", i.0, i.1, array220(i.0.clone(), i.1));
     }
 }
