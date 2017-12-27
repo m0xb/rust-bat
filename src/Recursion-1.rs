@@ -178,6 +178,45 @@ fn array220(array: Vec<i32>, start_index: usize) -> bool {
     }
 }
 
+fn endX(mut s: String) -> String {
+    if s.len() > 0 {
+        if s.chars().nth(0).unwrap() == 'x' {
+            return endX(s[1..s.len()].to_string()) + "x"
+        } else {
+            return s.chars().nth(0).unwrap().to_string() + &endX(s[1..s.len()].to_string())
+        }
+    } else {
+        return s
+    }
+}
+
+fn count11(s: String) -> u32 {
+    if s.len() > 1 {
+        if &s[0..2] == "11" {
+            return 1 + count11(s[2..s.len()].to_string())
+        } else {
+            return count11(s[1..s.len()].to_string())
+        }
+    } else {
+        return 0
+    }
+}
+//This doesn't quite work recursively I feel.  I spent a while trying to get this to work without using an iterator, but gave up.
+//Using the find() method.
+fn parenBit(s: String) -> String {
+    if s.len() > 0 {
+        if s.chars().nth(0).unwrap() == '(' {
+            let index = match s.find(')') {
+                None => 0,
+                Some(res) => res,};
+            return s[0..index].to_string() + &")".to_string()
+        } else {
+            return parenBit(s[1..s.len()].to_string())
+        }
+    } else {
+        return s
+    }
+}
 
 fn main() {
     let factorial_tests = vec![1, 2, 3, 4, 5, 6, 7, 8, 12];
@@ -412,5 +451,61 @@ fn main() {
     (vec![1, 2, 3, 4, 4, 50, 500, 6], 0)];
     for i in array220_tests {
         println!("array220:  Array: {:?}, Index: {}, Result: {}", i.0, i.1, array220(i.0.clone(), i.1));
+    }
+
+    println!("\n");
+
+    let endX_tests = vec![
+    "xxre",
+    "xxhixx",
+    "xhixhix",
+    "hiy",
+    "h",
+    "x",
+    "xx",
+    "",
+    "bxx",
+    "bxax",
+    "axaxax",
+    "xxhxi"];
+    for i in endX_tests {
+        println!("endX: {}", endX(i.to_string()));
+    }
+
+    println!("\n");
+
+    let count11_tests = vec![
+    "11abc11",
+    "abc11x11x11",
+    "111",
+    "1111",
+    "1",
+    "",
+    "hi",
+    "11x111x1111",
+    "1x111",
+    "1Hello1",
+    "Hello"];
+    for i in count11_tests {
+        println!("count11: {}", count11(i.to_string()));
+    }
+
+    println!("\n");
+
+    let parenBit_tests = vec![
+    "xyz(abc)123",
+    "x(hello)",
+    "(xy)1",
+    "not really (possible)",
+    "(abc)",
+    "(abc)xyz",
+    "(abc)x",
+    "(x)",
+    "()",
+    "res (ipsa) loquitor",
+    "hello(not really)there",
+    "ab(ab)ab"];
+    for i in parenBit_tests {
+        println!("parenBit: {}", parenBit(i.to_string()));
     }
 }
