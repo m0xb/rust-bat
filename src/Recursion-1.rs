@@ -206,10 +206,8 @@ fn count11(s: String) -> u32 {
 fn parenBit(s: String) -> String {
     if s.len() > 0 {
         if s.chars().nth(0).unwrap() == '(' {
-            let index = match s.find(')') {
-                None => 0,
-                Some(res) => res,};
-            return s[0..index].to_string() + &")".to_string()
+            let index = s.find(')');
+            return s[0..index.unwrap_or_else(|| 0)].to_string() + &")".to_string()
         } else {
             return parenBit(s[1..s.len()].to_string())
         }
