@@ -236,6 +236,41 @@ fn strCopies(s: String, sub: String, n: u32) -> bool {
     }
 }
 
+fn fibonacci(n: u32) -> u32 {
+    if n > 1 {
+        return fibonacci(n - 2) + fibonacci(n - 1)
+    } else {
+        return n
+    }
+}
+
+fn sumDigits(num: u32) -> u32 {
+    if num > 0 {
+        return num % 10 + sumDigits(num/10)
+    } else {
+        return 0
+    }
+}
+
+//This may need to be expanded to cover negative and fractional exponents and raising negative numbers to odd exponents.
+fn powerN(base: i32, n: i32) -> i32 {
+    if n > 1 {
+        return base * powerN(base, n - 1)
+    } else {
+        return base
+    }
+}
+
+/*fn changeXY(mut s: String) -> String {
+    if s.len() > 0 {
+        if s.chars().nth(0).unwrap() == 'x' {
+
+        }
+    } else {
+        return s
+    }
+}
+*/
 
 fn main() {
     let factorial_tests = vec![1, 2, 3, 4, 5, 6, 7, 8, 12];
@@ -549,5 +584,36 @@ fn main() {
         println!("strCopies: {}", strCopies(i.0.to_string(), i.1.to_string(), i.2))
     }
 
+    println!("\n");
+
+    let fibonacci_tests = vec![0, 1, 2, 3, 4, 5, 6, 7];
+    for i in fibonacci_tests {
+        println!("fibonacci: {}", fibonacci(i));
+    }
+
+    println!("\n");
+
+    let sumDigits_tests = vec![126, 49, 12, 10, 1, 0, 730, 1111, 11111, 10110, 235];
+    for i in sumDigits_tests {
+        println!("sumDigits: {}", sumDigits(i));
+    }
+
+    println!("\n");
+
+    let powerN_tests = vec![
+        (3, 1),
+        (3, 2),
+        (3, 3),
+        (2, 1),
+        (2, 2),
+        (2, 3),
+        (2, 4),
+        (2, 5),
+        (10, 1),
+        (10, 2),
+        (10, 3)];
+    for i in powerN_tests {
+        println!("powerN: {}", powerN(i.0, i.1))
+    }
 
 }
