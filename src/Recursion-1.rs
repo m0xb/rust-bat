@@ -206,8 +206,14 @@ fn count11(s: String) -> u32 {
 fn parenBit(s: String) -> String {
     if s.len() > 0 {
         if s.chars().nth(0).unwrap() == '(' {
+            //let index = s.find(')');
+            //return s[0..index.unwrap_or_else(|| 0)].to_string() + &")".to_string()
             let index = s.find(')');
-            return s[0..index.unwrap_or_else(|| 0)].to_string() + &")".to_string()
+            if let Some(res) = index {
+                return s[0..res].to_string() + ")"
+            } else {
+                panic!("k1mp0ss1bru!!1!")
+            }
         } else {
             return parenBit(s[1..s.len()].to_string())
         }
@@ -215,6 +221,21 @@ fn parenBit(s: String) -> String {
         return s
     }
 }
+
+fn strCopies(s: String, sub: String, n: u32) -> bool {
+    if s.len() >= sub.len() && n > 0{
+        if s[0..sub.len()] == sub {
+               return strCopies(s[1..s.len()].to_string(), sub, n - 1)
+        } else {
+            return strCopies(s[1..s.len()].to_string(), sub, n)
+        }
+    } else if n == 0 {
+        return true
+    } else {
+        return false
+    }
+}
+
 
 fn main() {
     let factorial_tests = vec![1, 2, 3, 4, 5, 6, 7, 8, 12];
@@ -506,4 +527,27 @@ fn main() {
     for i in parenBit_tests {
         println!("parenBit: {}", parenBit(i.to_string()));
     }
+
+    println!("\n");
+
+    let strCopies_tests = vec![
+        ("catcowcat", "cat", 2),
+        ("catcowcat", "cow", 2),
+        ("catcowcat", "cow", 1),
+        ("iiijjj", "i", 3),
+        ("iiijjj", "i", 4),
+        ("iiijjj", "ii", 2),
+        ("iiijjj", "ii", 3),
+        ("iiijjj", "x", 3),
+        ("iiijjj", "x", 0),
+        ("iiiiij", "iii", 3),
+        ("iiiiij", "iii", 4),
+        ("ijiiiiij", "iiii", 2),
+        ("ijiiiiij", "iiii", 3),
+        ("dogcatdogcat", "dog", 2)];
+    for i in strCopies_tests {
+        println!("strCopies: {}", strCopies(i.0.to_string(), i.1.to_string(), i.2))
+    }
+
+
 }
