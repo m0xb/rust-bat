@@ -261,16 +261,87 @@ fn powerN(base: i32, n: i32) -> i32 {
     }
 }
 
-/*fn changeXY(mut s: String) -> String {
+//Preliminary version, will refactor to try out the other approaches we discussed.
+fn changeXY(mut s: String) -> String {
     if s.len() > 0 {
         if s.chars().nth(0).unwrap() == 'x' {
-
+            return "y".to_string() + &changeXY(s[1..s.len()].to_string())
+        } else {
+            return s.chars().nth(0).unwrap().to_string() + &changeXY(s[1..s.len()].to_string())
         }
     } else {
         return s
     }
 }
-*/
+
+fn array6(array: Vec<i32>, index: usize) -> bool {
+   if index < array.len() {
+       if array[index] == 6 {
+           return true
+       } else {
+           return array6(array, index + 1)
+       }
+   } else {
+       return false
+   }
+}
+
+fn allStar(s: String) -> String {
+    if s.len() > 1 {
+        return s.chars().nth(0).unwrap().to_string() + &"*".to_string() + &allStar( s[1..s.len()].to_string())
+    }
+    else {
+        return s
+    }
+}
+
+fn countPairs(s: String) -> u32 {
+    if s.len() > 2 {
+        if s.chars().nth(0).unwrap() == s.chars().nth(2).unwrap() {
+            return 1 + countPairs(s[1..s.len()].to_string())
+        } else {
+            return countPairs(s[1..s.len()].to_string())
+        }
+    } else {
+        return 0
+    }
+}
+
+fn stringClean(s: String) -> String {
+    if s.len() > 1 {
+        if s.chars().nth(0).unwrap() == s.chars().nth(1).unwrap() {
+            return stringClean(s[1..s.len()].to_string())
+        } else {
+            return s.chars().nth(0).unwrap().to_string() + &stringClean(s[1..s.len()].to_string())
+        }
+    } else {
+        return s
+    }
+}
+
+fn nestParen(s: String) -> bool {
+    if s.len() > 0 {
+        if s.chars().nth(0).unwrap() == '(' && s.chars().nth(s.len() - 1).unwrap() == ')' {
+            return nestParen(s[1..(s.len() - 1)].to_string())
+        } else {
+            return false
+        }
+    } else {
+        return true
+    }
+}
+
+fn strDist(s: String, sub: String) -> usize {
+    if s.len() < sub.len() {
+        return 0
+    } else if s[0..sub.len()] == sub && s[(s.len() - sub.len())..s.len()] == sub {
+            return s.len()
+    } else if s[0..sub.len()] == sub {
+        return strDist(s[0..(s.len() - 1)].to_string(), sub)
+    } else {
+        return strDist(s[1..s.len()].to_string(), sub)
+    }
+}
 
 fn main() {
     let factorial_tests = vec![1, 2, 3, 4, 5, 6, 7, 8, 12];
@@ -616,4 +687,123 @@ fn main() {
         println!("powerN: {}", powerN(i.0, i.1))
     }
 
+    println!("\n");
+
+    let changeXY_tests = vec![
+    "codex",
+    "xxhixx",
+    "xhixhix",
+    "hiy",
+    "h",
+    "x",
+    "",
+    "xxx",
+    "yyhxyi",
+    "hihi"];
+    for i in changeXY_tests {
+        println!("changeXY: {}", changeXY(i.to_string()));
+    }
+
+    println!("\n");
+
+    let array6_tests = vec![
+        (vec![1, 6, 4], 0),
+        (vec![1, 4], 0),
+        (vec![6], 0),
+        (vec![], 0),
+        (vec![6, 2, 2], 0),
+        (vec![2, 5], 0),
+        (vec![1, 9, 4, 6, 6], 0),
+        (vec![2, 5, 6], 0)];
+    for i in array6_tests {
+        println!("array6: {}", array6(i.0, i.1));
+    }
+
+    println!("\n");
+
+    let allStar_tests = vec![
+    "hello",
+    "abc",
+    "ab",
+    "a",
+    "3.14",
+    "Chocolate",
+    "1234"];
+    for i in allStar_tests {
+        println!("allStar: {}", allStar(i.to_string()));
+    }
+
+    println!("\n");
+
+    let countPairs_tests = vec![
+    "axa",
+    "axax",
+    "axbx",
+    "hi",
+    "hihih",
+    "ihihhh",
+    "ihjxhh",
+    "",
+    "a",
+    "aa",
+    "aaa"];
+    for i in countPairs_tests {
+        println!("countPairs: {}", countPairs(i.to_string()));
+    }
+
+    println!("\n");
+
+    let stringClean_tests = vec![
+    "yyzzza",
+    "abbbcdd",
+    "Hello",
+    "XXabcYY",
+    "112ab445",
+    "Hello Bookkeeper"];
+    for i in stringClean_tests {
+        println!("stringClean: {}", stringClean(i.to_string()));
+    }
+
+    println!("\n");
+
+    let nestParen_tests = vec![
+    "(())",
+    "((()))",
+    "(((x))",
+    "((())",
+    "((()()",
+    "()",
+    "",
+    "(yy)",
+    "(())",
+    "(((y))",
+    "((y)))",
+    "((()))",
+    "(())))",
+    "((yy())))",
+    "(((())))"];
+    for i in nestParen_tests {
+        println!("nestParen: {}", nestParen(i.to_string()));
+    }
+
+    println!("\n");
+
+    let strDist_tests = vec![
+        ("catcowcat", "cat"),
+        ("catcowcat", "cow"),
+        ("cccatcowcatxx", "cat"),
+        ("abccatcowcatcatxyx", "cat"),
+        ("xyx", "x"),
+        ("xyx", "y"),
+        ("xyx", "z"),
+        ("z", "z"),
+        ("x", "z"),
+        ("", "z"),
+        ("hiHellohihihi", "hi"),
+        ("hiHellohihihi", "hih"),
+        ("hiHellohihihi", "o"),
+        ("hiHellohihihi", "ll")];
+    for i in strDist_tests {
+        println!("strDist: {}", strDist(i.0.to_string(), i.1.to_string()));
+    }
 }
