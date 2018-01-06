@@ -73,7 +73,32 @@ fn groupSum5(start: usize, nums: &Vec<i32>, target: i32) -> bool {
     }
     return false
 }
-
+//Use of a loop is allowed per the conditions of the bat.
+fn groupSumClump(start: usize, nums: &Vec<i32>, target: i32) -> bool {
+    if target == 0 && start == nums.len() {
+        return true
+    }
+    if start >= nums.len() {
+        return false
+    }
+    let mut sum = 0;
+    let mut i = start;
+    while i < nums.len() && nums[start] == nums[i] {
+        sum += nums[i];
+        i += 1;
+    }
+    //Note, i = start + 1, given the conditions of the while loop.
+    if groupSumClump(i , nums, target - sum) {
+        return true
+    }
+    //if groupSumClump(i, nums, target - nums[i - 1]) {
+    //    return true
+    //}
+    if groupSumClump(i, nums, target) {
+        return true
+    }
+    return false
+}
 
 fn main() {
     //Formatting exercise.
@@ -193,6 +218,20 @@ fn main() {
         (0, vec![2, 5, 5], 7)];
     for i in groupSum5_tests {
         println!("groupSum5: {}, nums: {:?}, target: {}", groupSum5(i.0, &i.1, i.2), i.1, i.2);
+    }
+
+    println!();
+
+    let groupSumClump_tests = vec![
+        (0, vec![2, 4, 8], 10),
+        (0, vec![1, 2, 4, 8, 1], 14),
+        (0, vec![2, 4, 4, 8], 14),
+        (0, vec![8, 2, 2, 1], 9),
+        (0, vec![8, 2, 2, 1], 11),
+        (0, vec![1], 1),
+        (0, vec![9], 1)];
+    for i in groupSumClump_tests {
+        println!("groupSumClump: {}", groupSumClump(i.0, &i.1, i.2));
     }
 }
 
