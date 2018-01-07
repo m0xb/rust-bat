@@ -6,25 +6,16 @@ fn square(list: Vec<i32>) -> Vec<i32> {
     return list.into_iter().map(|x| x * x).collect()
 }
 
-//This seems like it could be done with one line of code, though I'm not sure how.
 fn addStar(list: Vec<&str>) -> Vec<String> {
-    //&str, from what I can tell, doesn't implement the Add trait the same way String does (where you can add a String and a &str).
-    //Below is a kludged together solution to get around this made by looking at compile errors.
-    let s_list: Vec<String> = list.into_iter().map(|x| x.to_owned()).collect();
-    let star_list = s_list.into_iter().map(|x| x + &"*").collect();
-    return star_list
+    return list.into_iter().map(|x| x.to_owned() + "*").collect();
 }
 
 fn copies3(list: Vec<&str>) -> Vec<String> {
-    let s_list: Vec<String> = list.into_iter().map(|x| x.to_owned()).collect();
-    let copy_list = s_list.into_iter().map(|x| x.clone() + &x + &x).collect();
-    return copy_list
+    list.into_iter().map(|x| x.to_owned() + x + x).collect()
 }
 
 fn moreY(list: Vec<&str>) -> Vec<String> {
-    let s_list: Vec<String> = list.into_iter().map(|x| x.to_owned()).collect();
-    let y_list = s_list.into_iter().map(|x| "y".to_string() + &x.clone() + &"y").collect();
-    return y_list
+    list.into_iter().map(|x| "y".to_string() + x + "y").collect()
 }
 
 fn math1(list: Vec<i32>) -> Vec<i32> {
@@ -32,21 +23,16 @@ fn math1(list: Vec<i32>) -> Vec<i32> {
 }
 
 fn rightDigit(list: Vec<i32>) -> Vec<i32> {
-    return list.into_iter().map(|x| x % 10).collect();
+    return list.iter().map(|x| x % 10).collect();
 }
 
 fn lower(list: Vec<&str>) -> Vec<String> {
-    let s_list: Vec<String> = list.into_iter().map(|x| x.to_owned()).collect();
-    return s_list.into_iter().map(|x| x.to_lowercase()).collect();
+     list.iter().map(|x| x.to_lowercase()).collect()
 }
 
 fn noX(list: Vec<&str>) -> Vec<String> {
-    let s_list: Vec<String> = list.into_iter().map(|x| x.to_owned()).collect();
-    return s_list.into_iter().map(|x| x.replace("x", "")).collect()
+    list.into_iter().map(|x| x.replace("x", "")).collect()
 }
-
-
-
 
 fn main() {
     let doubling_tests = vec![
@@ -100,6 +86,8 @@ fn main() {
     for i in copies3_tests {
         println!("copies3: {:?}", copies3(i));
     }
+
+    println!();
 
     let moreY_tests = vec![
         vec!["a", "b", "c"],
