@@ -100,6 +100,86 @@ fn groupSumClump(start: usize, nums: &Vec<i32>, target: i32) -> bool {
     return false
 }
 
+fn splitArray(nums: &Vec<i32>) -> bool {
+//This function needs to return true if l_sum == r_sum.  I need a way to bi-directionally sum the array and backtrack over possible positions
+// for the split point between the two sums (index).
+//I'll start with returning sA_Helper with index set to 0, and l_sum and r_sum set to to.  I'll make sA_Helper recursive, but not splitArray.
+//sA_Helper returns a bool, so I can call it in the return statement.
+    return sA_Helper(nums, 0, 0, 0)
+}
+
+fn sA_Helper(nums: &Vec<i32>, index: usize, l_sum: i32, r_sum: i32) -> bool {
+    if index >= nums.len() {
+        if l_sum == r_sum {
+            return true
+        }
+        return false
+    }
+    //Increment l_sum by nums[index], check if it returns true via the base condition.
+    if sA_Helper(nums, index + 1, l_sum + nums[index], r_sum) {
+        return true
+    }
+    //Increment r_sum by nums[index], check if it returns true via the base condition.
+    if sA_Helper(nums, index + 1, l_sum, r_sum + nums[index]) {
+        return true
+    }
+    //
+    return false
+}
+
+//I more or less plan on trying to duplicate my strategy with splitArray here, but with the added constraints.
+//The condition for passing is that all elements can be successfully placed into two groups.  The first group must sum to a multiple of 10,
+//the second group must sum to an odd number.
+fn splitOdd10(nums: &Vec<i32>) -> bool {
+    //Again, my helper function returns a bool, so we can just return it.
+    return sO10_Helper(nums, 0, 0, 0)
+}
+
+fn sO10_Helper(nums: &Vec<i32>, ten_sum: i32, odd_sum: i32, index: usize) -> bool {
+    //Our base (accessible only when index == nums.len(), so the whole array is considered) condition to return true
+    // is going to be two criteria: ten_sum % 10 == 0, and odd_sum % 2 == 1
+    if index >= nums.len() {
+        if ten_sum % 10 == 0 && odd_sum % 2 == 1 {
+            return true
+        }
+        return false
+    }
+    //Check for ten_sum
+    if sO10_Helper(nums, ten_sum + nums[index], odd_sum, index + 1) {
+        return true
+    }
+    if sO10_Helper(nums, ten_sum, odd_sum + nums[index], index + 1) {
+        return true
+    }
+    return false
+}
+
+fn split53(nums: &Vec<i32>) -> bool {
+    return s53_Helper(nums, 0, 0, 0)
+}
+
+fn s53_Helper(nums: &Vec<i32>, five_sum: i32, three_sum: i32, index: usize) -> bool {
+    if index >= nums.len() {
+        return five_sum == three_sum
+    }
+    if nums[index] % 3 == 0 {
+        return s53_Helper(nums, five_sum, three_sum + nums[index], index + 1)
+    }
+    if nums[index] % 5 == 0 {
+        return s53_Helper(nums, five_sum + nums[index], three_sum, index + 1)
+    }
+    return s53_Helper(nums, five_sum + nums[index], three_sum, index + 1) || s53_Helper(nums, five_sum, three_sum + nums[index], index + 1)
+
+    /*if s53_Helper(nums, five_sum + nums[index], three_sum, index + 1) {
+        return true
+    }
+    if s53_Helper(nums, five_sum, three_sum + nums[index], index + 1) {
+        return true
+    }
+    return false
+    */
+}
+
 fn main() {
     //Formatting exercise.
     let groupSum_tests = vec![
@@ -233,6 +313,62 @@ fn main() {
     for i in groupSumClump_tests {
         println!("groupSumClump: {}", groupSumClump(i.0, &i.1, i.2));
     }
+
+    println!();
+
+    let splitArray_tests = vec![
+        vec![2, 2],
+        vec![2, 3],
+        vec![5, 2, 3],
+        vec![5, 2, 2],
+        vec![1, 1, 1, 1, 1, 1],
+        vec![1, 1, 1, 1, 1],
+        vec![],
+        vec![1],
+        vec![3, 5],
+        vec![5, 3, 2],
+        vec![2, 2, 10, 10, 1, 1],
+        vec![1, 2, 2, 10, 10, 1, 1],
+        vec![1, 2, 3, 10, 10, 1, 1]];
+    for i in splitArray_tests {
+        println!("splitArray: {}", splitArray(&i));
+    }
+
+    println!();
+
+    let splitOdd10_tests = vec![
+        vec![5, 5, 5],
+        vec![5, 5, 6],
+        vec![5, 5, 6, 1],
+        vec![6, 5, 5, 1],
+        vec![6, 5, 5, 1, 10],
+        vec![6, 5, 5, 5, 1],
+        vec![1],
+        vec![],
+        vec![10, 7, 5, 5],
+        vec![10, 0, 5, 5],
+        vec![10, 7, 5, 5, 2],
+        vec![10, 7, 5, 5, 1]];
+    for i in splitOdd10_tests {
+        println!("splitOdd10: {}", splitOdd10(&i));
+    }
+
+    println!();
+
+    let split53_tests = vec![
+    vec![1, 1],
+    vec![1, 1, 1],
+    vec![2, 4, 2],
+    vec![2, 2, 2, 1],
+    vec![3, 3, 5, 1],
+    vec![3, 5, 8],
+    vec![2, 4, 6],
+    vec![3, 5 ,6, 10, 3, 3]];
+    for i in split53_tests {
+        println!("split53: {}", split53(&i));
+    }
+
+
 }
 
 
