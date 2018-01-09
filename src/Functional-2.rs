@@ -29,11 +29,14 @@ fn noYY(list: Vec<&str>) -> Vec<String> {
 }
 
 fn two2(mut list: Vec<i32>) -> Vec<i32> {
-    list = list.into_iter().map(|x| x*2).collect();
+    list = list.iter().map(|x| x*2).collect();
     return list.into_iter().filter(|x| x % 10 != 2).collect();
-
 }
 
+fn square56(mut list: Vec<i32>) -> Vec<i32> {
+    list = list.iter().map(|x| x*x + 10).collect();
+    return list.into_iter().filter(|x| x % 10 != 5 && x % 10 != 6).collect()
+}
 
 
 fn main() {
@@ -154,6 +157,23 @@ fn main() {
         vec![3, 1, 4, 1, 6, 99, 0]];
     for i in two2_tests {
         println!("two2: {:?}", two2(i));
+    }
+
+    println!();
+
+    let square56_tests = vec![
+        vec![3, 1, 4],
+        vec![1],
+        vec![2],
+        vec![3],
+        vec![4],
+        vec![5],
+        vec![6],
+        vec![7],
+        vec![1, 2, 3, 4, 5, 6, 7],
+        vec![3, -1, -4, 1, 4, 5, 9]];
+    for i in square56_tests {
+        println!("square56: {:?}", square56(i));
     }
 
 }
