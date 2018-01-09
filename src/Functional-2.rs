@@ -28,6 +28,13 @@ fn noYY(list: Vec<&str>) -> Vec<String> {
     return y_list.into_iter().filter(|x| !x.contains("yy")).collect()
 }
 
+fn two2(mut list: Vec<i32>) -> Vec<i32> {
+    list = list.into_iter().map(|x| x*2).collect();
+    return list.into_iter().filter(|x| x % 10 != 2).collect();
+
+}
+
+
 
 fn main() {
     let noNeg_tests = vec![
@@ -133,6 +140,20 @@ fn main() {
         vec!["xx", "yy", "zz"]];
     for i in noYY_tests {
         println!("noYY: {:?}", noYY(i));
+    }
+
+    println!();
+
+    let two2_tests =  vec![
+        vec![1, 2, 3],
+        vec![2, 6, 11],
+        vec![0],
+        vec![],
+        vec![1, 11, 111, 16],
+        vec![2, 3, 5, 7, 11],
+        vec![3, 1, 4, 1, 6, 99, 0]];
+    for i in two2_tests {
+        println!("two2: {:?}", two2(i));
     }
 
 }
