@@ -1,18 +1,29 @@
-fn printbat() {
-    let mut groupSum_rows = Vec::new();
-    let mut column_widths = (3, 0, 0, 0);
-    for i in groupSum_tests {
-        let invocation = format!("groupSum({}, {:?}, {})", i.0, i.1, i.2);
-        let expectation = i.3.to_string();
-        let actual = groupSum(i.0, &i.1, i.2).to_string();
-        let passed = i.3 == groupSum(i.0, &i.1, i.2);
 
-        column_widths.1 = max(invocation.chars().count(), column_widths.1);
-        column_widths.2 = max(expectation.chars().count(), column_widths.2);
-        column_widths.3 = max(actual.chars().count(), column_widths.3);
-        groupSum_rows.push((passed, invocation, expectation, actual));
-    }
-    for i in groupSum_rows {
+macro_rules! printbat {
+($bat:ident, $($($arg:expr),+ => $expectation:expr),+) => {{
+    let mut rows = Vec::new();
+    let mut column_widths = (3, 0, 0, 0);
+    use std::cmp;
+    $(
+        let mut invocation = stringify!($bat).to_owned();
+        invocation += "(";
+        let mut separator = "";
+        $(
+            invocation += &format!("{}{:?}", separator, $arg);
+            separator = ", ";
+        )+
+        invocation += ")";
+        //let invocation = format!("{}({:?})", stringify!($bat), $($arg,)+);
+        let expectation = format!("{:?}", $expectation);
+        let actual = $bat($($arg,)+);
+        let actual_str = format!("{:?}", actual);
+        let passed: bool = actual == $expectation;
+        column_widths.1 = cmp::max(invocation.chars().count(), column_widths.1);
+        column_widths.2 = cmp::max(expectation.chars().count(), column_widths.2);
+        column_widths.3 = cmp::max(actual_str.chars().count(), column_widths.3);
+        rows.push((passed, invocation, expectation, actual_str));
+    )+
+    for i in rows {
         fn render_cell(s: &str, cwidth: usize) {
             print!("{}", s);
             let width_delta = cwidth - s.chars().count();
@@ -34,4 +45,5 @@ fn printbat() {
         }
         println!();
     }
+}}
 }
