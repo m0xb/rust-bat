@@ -41,72 +41,72 @@ fn square56(mut list: Vec<i32>) -> Vec<i32> {
 
 fn main() {
     let noNeg_tests = vec![
-        vec![1, -2],
-        vec![-3, -3, 3, 3],
-        vec![-1, -1, -1],
-        vec![],
-        vec![0, 1, 2],
-        vec![3, -10, 1, -1, 4, -400],
-        vec![-1, 3, 1, -1, -10, -100, -111, 5]];
+        (vec![1, -2], vec![1]),
+        (vec![-3, -3, 3, 3], vec![3, 3]),
+        (vec![-1, -1, -1], vec![]),
+        (vec![], vec![]),
+        (vec![0, 1, 2], vec![0, 1, 2]),
+        (vec![3, -10, 1, -1, 4, -400], vec![3, 1, 4]),
+        (vec![-1, 3, 1, -1, -10, -100, -111, 5], vec![3, 1, 5])];
     for i in noNeg_tests {
-        println!("noNeg: {:?}", noNeg(i));
+        println!("noNeg: {:?} -> {:?}", i.1, noNeg(i.0));
     }
 
     println!();
 
     let no9_tests = vec![
-        vec![1, 2, 19],
-        vec![9, 19, 29, 3],
-        vec![1, 2, 3],
-        vec![45, 99, 90, 28, 13, 999, 0],
-        vec![],
-        vec![9],
-        vec![0, 9, 0]];
+        (vec![1, 2, 19], vec![1, 2]),
+        (vec![9, 19, 29, 3], vec![3]),
+        (vec![1, 2, 3], vec![1, 2, 3]),
+        (vec![45, 99, 90, 28, 13, 999, 0], vec![45, 90, 28, 13, 0]),
+        (vec![], vec![]),
+        (vec![9], vec![]),
+        (vec![0, 9, 0], vec![0, 0])];
     for i in no9_tests {
-        println!("no9: {:?}", no9(i));
+        println!("no9: {:?} -> {:?}", i.1, no9(i.0));
     }
 
     println!();
 
     let noTeen_tests = vec![
-        vec![12, 13, 19, 20],
-        vec![1, 14, 1],
-        vec![15],
-        vec![-15],
-        vec![],
-        vec![0, 1, 2, -3],
-        vec![15, 17, 19, 21, 19],
-        vec![-16, 2, 15, 3, 16, 25]];
+        (vec![12, 13, 19, 20], vec![12, 20]),
+        (vec![1, 14, 1], vec![1, 1]),
+        (vec![15], vec![]),
+        (vec![-15], vec![-15]),
+        (vec![], vec![]),
+        (vec![0, 1, 2, -3], vec![0, 1, 2, -3]),
+        (vec![15, 17, 19, 21, 19], vec![21]),
+        (vec![-16, 2, 15, 3, 16, 25], vec![-16, 2, 3, 25])];
     for i in noTeen_tests {
-        println!("noTeen: {:?}", noTeen(i));
+        println!("noTeen: {:?} -> {:?}", i.1, noTeen(i.0));
     }
 
     println!();
 
     let noLong_tests = vec![
-    vec!["this", "not", "too", "long"],
-    vec!["a", "bbb", "cccc"],
-    vec!["cccc", "cccc", "cccc"],
-    vec![],
-    vec![""],
-    vec!["empty", "", "empty"],
-    vec!["a"],
-    vec!["aaaa", "bbb", "***", "333"]];
+        (vec!["this", "not", "too", "long"], vec!["not", "too"]),
+        (vec!["a", "bbb", "cccc"],vec!["a", "bbb"]),
+        (vec!["cccc", "cccc", "cccc"], vec![]),
+        (vec![], vec![]),
+        (vec![""], vec![""]),
+        (vec!["empty", "", "empty"], vec![""]),
+        (vec!["a"], vec!["a"]),
+        (vec!["aaaa", "bbb", "***", "333"], vec!["bbb", "***", "333"])];
     for i in noLong_tests {
-        println!("noLong: {:?}", noLong(i));
+        println!("noLong: {:?} -> {:?}", i.1, noLong(i.0));
     }
 
     println!();
 
     let noZ_tests = vec![
-        vec!["aaa", "bbb", "aza"],
-        vec!["hziz", "hzello", "hi"],
-        vec!["hello", "howz", "are", "youz"],
-        vec![],
-        vec![""],
-        vec!["x", "y", "z"]];
+        (vec!["aaa", "bbb", "aza"], vec!["aaa", "bbb"]),
+        (vec!["hziz", "hzello", "hi"], vec!["hi"]),
+        (vec!["hello", "howz", "are", "youz"], vec!["hello", "are"]),
+        (vec![], vec![]),
+        (vec![""], vec![""]),
+        (vec!["x", "y", "z"], vec!["x", "y"])];
     for i in noZ_tests {
-        println!("noZ: {:?}", noZ(i));
+        println!("noZ: {:?} -> {:?}", i.1, noZ(i.0));
     }
 
     println!();

@@ -560,10 +560,10 @@ fn main() {
     println!("\n");
 
     let array220_tests = vec![
-    (vec![1, 2, 20], 0),
-    (vec![3, 30], 0),
-    (vec![3], 0),
-    (vec![], 0),
+    (vec![1, 2, 20], 0, true),
+    (vec![3, 30], 0, true),
+    (vec![3], 0, true),
+    (vec![], 0, true),
     (vec![3, 3, 30, 4], 0),
     (vec![2, 19, 4], 0),
     (vec![20, 2, 21], 0),
@@ -575,6 +575,7 @@ fn main() {
     (vec![1, 2, 3, 4, 5, 51, 6], 0),
     (vec![1, 2, 3, 4, 4, 50, 500, 6], 0)];
     for i in array220_tests {
+        printbat!(array220(i.0, i.1), i.2);
         println!("array220:  Array: {:?}, Index: {}, Result: {}", i.0, i.1, array220(i.0.clone(), i.1));
     }
 
