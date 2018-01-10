@@ -112,68 +112,67 @@ fn main() {
     println!();
 
     let no34_tests = vec![
-        vec!["a", "bb", "ccc"],
-        vec!["a", "bb", "ccc", "dddd"],
-        vec!["ccc", "dddd", "apple"],
-        vec!["this", "not", "too", "long"],
-        vec!["a", "bbb", "cccc", "xx"],
-        vec!["dddd", "ddd", "xxxxxxx"],
-        vec![],
-        vec![""],
-        vec!["empty", "", "empty"],
-        vec!["a"],
-        vec!["aaaa", "bbb", "*****", "333"]];
+        (vec!["a", "bb", "ccc"], vec!["a", "bb"]),
+        (vec!["a", "bb", "ccc", "dddd"], vec!["a", "bb"]),
+        (vec!["ccc", "dddd", "apple"], vec!["apple"]),
+        (vec!["this", "not", "too", "long"], vec![]),
+        (vec!["a", "bbb", "cccc", "xx"], vec!["a", "xx"]),
+        (vec!["dddd", "ddd", "xxxxxxx"], vec!["xxxxxxx"]),
+        (vec![], vec![]),
+        (vec![""], vec![""]),
+        (vec!["empty", "", "empty"], vec!["empty", "", "empty"]),
+        (vec!["a"], vec!["a"]),
+        (vec!["aaaa", "bbb", "*****", "333"], vec!["*****"])];
     for i in no34_tests {
-        println!("no34: {:?}", no34(i));
+        println!("no34: {:?} -> {:?}", i.1, no34(i.0));
     }
 
     println!();
 
     let noYY_tests = vec![
-        vec!["a", "b", "c"],
-        vec!["a", "b", "cy"],
-        vec!["xx", "ya", "zz"],
-        vec!["xx", "yay", "zz"],
-        vec!["yyx", "y", "zzz"],
-        vec!["yyx", "y", "zzz"],
-        vec!["hello", "there"],
-        vec!["ya"],
-        vec![],
-        vec![""],
-        vec!["xx", "yy", "zz"]];
+        (vec!["a", "b", "c"], vec!["ay", "by", "cy"]),
+        (vec!["a", "b", "cy"], vec!["ay", "by"]),
+        (vec!["xx", "ya", "zz"], vec!["xxy", "yay", "zzy"]),
+        (vec!["xx", "yay", "zz"],vec!["xxy", "zzy"]),
+        (vec!["yyx", "y", "zzz"], vec!["zzzy"]),
+        (vec!["hello", "there"], vec!["helloy", "therey"]),
+        (vec!["ya"], vec!["yay"]),
+        (vec![], vec![]),
+        (vec![""], vec!["y"]),
+        (vec!["xx", "yy", "zz"], vec!["xxy", "zzy"])];
     for i in noYY_tests {
-        println!("noYY: {:?}", noYY(i));
+        println!("noYY: {:?} -> {:?}", i.1, noYY(i.0));
     }
 
     println!();
 
     let two2_tests =  vec![
-        vec![1, 2, 3],
-        vec![2, 6, 11],
-        vec![0],
-        vec![],
-        vec![1, 11, 111, 16],
-        vec![2, 3, 5, 7, 11],
-        vec![3, 1, 4, 1, 6, 99, 0]];
+        (vec![1, 2, 3], vec![4, 6]),
+        (vec![2, 6, 11], vec![4]),
+        (vec![0], vec![0]),
+        (vec![], vec![]),
+        (vec![1, 11, 111, 16], vec![]),
+        (vec![2, 3, 5, 7, 11], vec![4, 6, 10, 14]),
+        (vec![3, 1, 4, 1, 6, 99, 0], vec![6, 8, 198, 0])];
     for i in two2_tests {
-        println!("two2: {:?}", two2(i));
+        println!("two2: {:?} -> {:?}", i.1, two2(i.0));
     }
 
     println!();
 
     let square56_tests = vec![
-        vec![3, 1, 4],
-        vec![1],
-        vec![2],
-        vec![3],
-        vec![4],
-        vec![5],
-        vec![6],
-        vec![7],
-        vec![1, 2, 3, 4, 5, 6, 7],
-        vec![3, -1, -4, 1, 4, 5, 9]];
+        (vec![3, 1, 4], vec![19, 11]),
+        (vec![1], vec![11]),
+        (vec![2], vec![14]),
+        (vec![3], vec![19]),
+        (vec![4], vec![]),
+        (vec![5], vec![]),
+        (vec![6], vec![]),
+        (vec![7], vec![59]),
+        (vec![1, 2, 3, 4, 5, 6, 7], vec![11, 14, 19, 59]),
+        (vec![3, -1, -4, 1, 4, 5, 9], vec![19, 11, 11, 91])];
     for i in square56_tests {
-        println!("square56: {:?}", square56(i));
+        println!("square56: {:?} -> {:?}", i.1, square56(i.0));
     }
 
 }
