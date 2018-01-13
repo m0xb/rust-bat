@@ -15,3 +15,5 @@ for row in list(rows)[1:]:
     print(invocation_td.text.strip())
 # print(soup.prettify())
 # print(rows)
+
+
