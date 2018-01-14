@@ -10,7 +10,11 @@ def get_type(text):
     my_reg = re.search('(public|private|protected) ((static|final) )?([0-9a-zA-Z<>\[\]]*) ', text)
     return my_reg.group(4)
 
-
+def generate_return(text, type):
+    generic_type_dict = {'int': 'a = 0; return a;', 'String': 'String a = "hello; return a;', 'String[]': 'String[] a = \{\"Hello\"\}; return a;',
+                         'int[]': 'int[] a = {0}; return a', 'boolean': 'a = true; return a', 'List<Integer>': 'List<Integer> a = new ArrayList<Integer>(); return a;',
+                         'List<String>': 'List<String> a = new ArrayList<String>(); return a;', 'char': '', 'char[]': '', 'boolean[]': '', 'float': '', 'float[]': ''}
+    pass
 
 # bat = get_bat('p159531')
 # print(bat)
