@@ -5,48 +5,43 @@ import unittest
 def integer(s, index):
     m = re.match('-?([0-9]+)', s[index:])
     if m:
-        m = m.group(1)
-        index += len(m)
-        return (m, index)
+        token = m.group(1)
+        return (token, index + len(token))
     else:
         return (f'ERROR: Expecting digit, got {s[index:index+1]}', index)
 
 def floating_point(s, index):
     m = re.match('-?([0-9]+)\.([0-9]*)', s[index:])
     if m:
-        m = m.group(1)
-        index += len(m)
-        return (m, index)
+        token = m.group(1)
+        return (token, index + len(token))
     else:
-        return (f'ERROR: Expecting digit, got {s[index:index+1]}', index)
+        return (f'ERROR: Expecting float, got {s[index:index+1]}', index)
 
 def character(s, index):
     m = re.match('\'[^\']\'', s[index:])
     if m:
-        m = m.group(1)
-        index += len(m)
-        return (m, index)
+        token = m.group(1)
+        return (token, index + len(token))
     else:
-        return (f'ERROR: Expecting digit, got {s[index:index+1]}', index)
+        return (f'ERROR: Expecting char, got {s[index:index+1]}', index)
 
 
 def string(s, index):
     m = re.match('"[^"]*"', s[index:])
     if m:
-        m = m.group(1)
-        index += len(m)
-        return (m, index)
+        token = m.group(1)
+        return (token, index + len(token))
     else:
-        return (f'ERROR: Expecting digit, got {s[index:index+1]}', index)
+        return (f'ERROR: Expecting String, got {s[index:index+1]}', index)
 
 def boolean(s, index):
     m = re.search('(true|false)', s[index:])
     if m:
-        m = m.group(1)
-        index += len(m)
-        return (m, index)
+        token = m.group(1)
+        return (token, index + len(token))
     else:
-        return (f'ERROR: Expecting digit, got {s[index:index+1]}', index)
+        return (f'ERROR: Expecting bool, got {s[index:index+1]}', index)
 
 
 def array(s, index):
