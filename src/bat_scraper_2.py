@@ -39,14 +39,10 @@ def submit_code(code, pid):
     return row_list[0:-1]
 
 def get_expected(row):
-    return re.search('→ ([A-Za-z0-9"[\]()!.?:;/\\\\, ]*)', row).group(1)
-
-
+    return re.search('→ ([A-Za-z0-9"[\]()!.?:;/\\\\, @$%^&*#]*)', row).group(1)
 
 def get_invocation(row):
     pass
-
-
 
 pid = 'p128796'
 bat = get_bat(pid)
@@ -56,10 +52,8 @@ a = generate_code(bat, generate_return(get_type(bat)))
 print(a)
 b = submit_code(a, pid)
 print(b)
-for i in range(0, len(b)):
-    print(get_expected(b[i]))
-
-
+for row in b:
+    print(get_expected(row))
 
 class Test_get_type(unittest.TestCase):
     def test_bool(self):
