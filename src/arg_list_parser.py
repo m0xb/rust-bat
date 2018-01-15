@@ -11,7 +11,7 @@ def float(s, index):
     return(index, float_literal)
 
 def char(s, index):
-    char_literal = re.search('\'[^\']\'', s[index:index + 3])
+    char_literal = re.search('\'[^\']\'', s[index:])
     return (index + 1, char_literal)
 
 def string(s, index):
@@ -20,7 +20,7 @@ def string(s, index):
     return (index, string)
 
 def boolean(s, index):
-    bool_literal = re.search('(true|false)', s[index:index + 5]).group(1)
+    bool_literal = re.search('(true|false)', s[index:]).group(1)
     index = index + len(bool_literal)
     return (index, bool_literal)
 
