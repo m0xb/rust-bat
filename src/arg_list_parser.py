@@ -14,12 +14,12 @@ def char(s, index):
     return (index + 1, s[index])
 
 def string(s, index):
-    string = re.search('("[A-Za-z0-9;.:\\\\[\](){}]*")', s[index:]).group(1)
+    string = re.search('"([A-Za-z0-9;.:\\\\[\](){}]*)"', s[index:]).group(1)
     index = index + len(string)
     return (index, string)
 
 def boolean(s, index):
-    bool = re.search('true|false', s[index:index + 5]).group(1)
+    bool = re.search('(true|false)', s[index:index + 5]).group(1)
     index = index + len(bool)
     return (index, bool)
 
