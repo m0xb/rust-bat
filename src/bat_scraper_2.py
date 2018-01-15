@@ -11,7 +11,7 @@ def get_type(text):
     return my_reg.group(4)
 
 def generate_return(type):
-    generic_type_dict = {'int': 'a = 0; return a;',
+    generic_type_dict = {'int': 'return 0;',
                          'String': 'String a = "hello"; return a;',
                          'String[]': 'String[] a = {"Hello"}; return a;',
                          'int[]': 'int[] a = {0}; return a;',
@@ -38,15 +38,17 @@ def submit_code(code, pid):
         row_list.append(invocation_td.text.strip())
     return row_list[0:-1]
 
-def get_expected(row_list):
+def get_expected(row):
+    return re.search('→ ([A-Za-z0-9"[\]()!.?:;/\\\\, ]*)', row).group(1)
+
+
+
+def get_invocation(row):
     pass
 
-def get_invocation(row_list):
-    pass
 
 
-
-pid = 'p159531'
+pid = 'p128796'
 bat = get_bat(pid)
 print(bat)
 print(get_type(bat))
@@ -54,6 +56,10 @@ a = generate_code(bat, generate_return(get_type(bat)))
 print(a)
 b = submit_code(a, pid)
 print(b)
+for i in range(0, len(b)):
+    print(get_expected(b[i]))
+
+
 
 class Test_get_type(unittest.TestCase):
     def test_bool(self):
@@ -85,7 +91,7 @@ class Test_get_type(unittest.TestCase):
 
 class Test_generate_return(unittest.TestCase):
     def test_int(self):
-        self.assertEqual('a = 0; return a;', generate_return('int'))
+        self.assertEqual('return 0;', generate_return('int'))
     def test_String(self):
         self.assertEqual('String a = "hello"; return a;', generate_return('String'))
     def test_char(self):
@@ -112,6 +118,12 @@ class Test_generate_return(unittest.TestCase):
 class Test_generate_code(unittest.TestCase):
     def test_cigarParty(self):
         self.assertEqual('public boolean cigarParty(int cigars, boolean isWeekend) {a = true; return a;}', generate_code('public boolean cigarParty(int cigars, boolean isWeekend) {}', 'a = true; return a;'))
+
+class Test_expected(unittest.TestCase):
+    def test_repeatFront(self):
+        self.assertEqual('"JavaJavJaJ"', get_expected('repeatFront("Java", 4) → "JavaJavJaJ"'))
+
+
 if __name__ == '__main__':
     unittest.main()
 
