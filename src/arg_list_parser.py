@@ -54,6 +54,7 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('1234', 4), integer('1234.5678', 0))
         self.assertEqual(('123', 3), integer('123a345.789', 0))
         self.assertEqual(('ERROR: Expecting digit, got .', 0), integer('.1234', 0))
+
     def test_floating_point(self):
         self.assertEqual(('ERROR: Expecting float, got ', 0), floating_point('', 0))
         self.assertEqual(('ERROR: Expecting float, got 1', 0), floating_point('1', 0))
@@ -66,6 +67,7 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('1234.0', 6), floating_point('1234.0', 0))
         self.assertEqual(('1234.56789', 10), floating_point('1234.56789', 0))
         self.assertEqual(('234.56789', 10), floating_point('1234.56789', 1))
+
     def test_character(self):
         self.assertEqual(('ERROR: Expecting char, got ', 0), character('', 0))
         self.assertEqual(('ERROR: Expecting char, got a', 0), character('ab', 0))
@@ -75,17 +77,30 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('ERROR: Expecting char, got b', 0), character('bcd\'a\'', 0))
         self.assertEqual(('\'a\'', 3), character('\'a\'', 0))
         self.assertEqual(('\'"\'', 3), character('\'"\'', 0))
+
     def test_string(self):
         self.assertEqual(('ERROR: Expecting String, got ', 0), string('', 0))
         self.assertEqual(('ERROR: Expecting String, got a', 0), string('a""', 0))
+        self.assertEqual(('ERROR: Expecting String, got ', 4), string('a""', 4))
         self.assertEqual(('ERROR: Expecting String, got "', 0), string('"', 0))
         self.assertEqual(('""', 2), string('""', 0))
         self.assertEqual(('""', 2), string('"""', 0))
         self.assertEqual(('""', 3), string('"""', 1))
         self.assertEqual(('"Hello"', 8), string('""Hello"', 1))
+
     def test_boolean(self):
-        pass
+        self.assertEqual(('ERROR: Expecting bool, got ', 0), boolean('', 0))
+        self.assertEqual(('ERROR: Expecting bool, got r', 1), boolean('true', 1))
+        self.assertEqual(('ERROR: Expecting bool, got a', 1), boolean('false', 1))
+        self.assertEqual(('true', 4), boolean('true', 0))
+        self.assertEqual(('false', 5), boolean('false', 0))
+        self.assertEqual(('true', 4), boolean('truetruetruetrue', 0))
+        self.assertEqual(('true', 8), boolean('truetruetruetrue', 4))
+        self.assertEqual(('false', 5), boolean('falsefalsefalsefalse', 0))
+        self.assertEqual(('false', 10), boolean('falsefalsefalsefalse', 5))
+
     def test_array(self):
         pass
+
 if __name__ == '__main__':
     unittest.main()
