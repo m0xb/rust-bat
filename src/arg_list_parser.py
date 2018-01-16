@@ -6,7 +6,7 @@ def integer(s, index):
     m = re.match('-?([0-9]+)', s[index:])
     if m:
         token = m.group(0)
-        return (token, index + len(token))
+        return (int(token), index + len(token))
     else:
         return (f'ERROR: Expecting digit, got {s[index:index+1]}', index)
 
@@ -48,22 +48,21 @@ def array(s, index):
         s = s[1:-1]
     else:
         return (f'ERROR: Expecting [, got {s[index:index+1]}', index)
-    if len(s) > 0:
-        listify = s.split(', ')
-        intify = [int(x) for x in listify]
-        return (intify, index + len(intify))
+    if index < len(s):
+        parsed_ints = [integer(s.strip(), 0)[0] for s in s.split(',')]
+        return (parsed_ints, index + len(s) + 2)
     else:
-        return (s.split(), index)
+        return (s.split(), index + 2)
 
 # def parse_araay(s, index):
 
 class TestLiteralFunctions(unittest.TestCase):
     def test_interger(self):
         self.assertEqual(('ERROR: Expecting digit, got ', 0), integer('', 0))
-        self.assertEqual(('12345', 5), integer('12345', 0))
-        self.assertEqual(('234', 4), integer('1234', 1))
-        self.assertEqual(('1234', 4), integer('1234.5678', 0))
-        self.assertEqual(('123', 3), integer('123a345.789', 0))
+        self.assertEqual((12345, 5), integer('12345', 0))
+        self.assertEqual((234, 4), integer('1234', 1))
+        self.assertEqual((1234, 4), integer('1234.5678', 0))
+        self.assertEqual((123, 3), integer('123a345.789', 0))
         self.assertEqual(('ERROR: Expecting digit, got .', 0), integer('.1234', 0))
 
     def test_floating_point(self):
@@ -113,9 +112,9 @@ class TestLiteralFunctions(unittest.TestCase):
     def test_array(self):
         self.assertEqual(('ERROR: Expecting [, got ', 0), array('', 0))
         self.assertEqual(('ERROR: Expecting [, got ]', 0), array(']', 0))
-        self.assertEqual(([], 0), array('[]', 0))
-        self.assertEqual(([1], 1), array('[1]', 0))
-        self.assertEqual(([1, 2, 2], 3), array('[1, 2, 2]', 0))
+        self.assertEqual(([], 2), array('[]', 0))
+        self.assertEqual(([1], 3), array('[1]', 0))
+        self.assertEqual(([1, 2, 2], 9), array('[1, 2, 2]', 0))
 
 
 if __name__ == '__main__':
