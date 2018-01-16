@@ -35,7 +35,7 @@ def string(s, index):
         return (f'ERROR: Expecting String, got {s[index:index+1]}', index)
 
 def boolean(s, index):
-    m = re.search('(true|false)', s[index:])
+    m = re.match('(true|false)', s[index:])
     if m:
         token = m.group(0)
         return (token, index + len(token))
@@ -44,7 +44,18 @@ def boolean(s, index):
 
 
 def array(s, index):
-    pass
+    if len(s) > 1 and s[index] == '[':
+        s = s[1:-1]
+    else:
+        return (f'ERROR: Expecting [, got {s[index:index+1]}', index)
+    if len(s) > 0:
+        listify = s.split(', ')
+        intify = [int(x) for x in listify]
+        return (intify, index + len(intify))
+    else:
+        return (s.split(), index)
+
+# def parse_araay(s, index):
 
 class TestLiteralFunctions(unittest.TestCase):
     def test_interger(self):
@@ -100,7 +111,12 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('false', 10), boolean('falsefalsefalsefalse', 5))
 
     def test_array(self):
-        pass
+        self.assertEqual(('ERROR: Expecting [, got ', 0), array('', 0))
+        self.assertEqual(('ERROR: Expecting [, got ]', 0), array(']', 0))
+        self.assertEqual(([], 0), array('[]', 0))
+        self.assertEqual(([1], 1), array('[1]', 0))
+        self.assertEqual(([1, 2, 2], 3), array('[1, 2, 2]', 0))
+
 
 if __name__ == '__main__':
     unittest.main()
