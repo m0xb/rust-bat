@@ -26,7 +26,6 @@ def character(s, index):
     else:
         return (f'ERROR: Expecting char, got {s[index:index+1]}', index)
 
-
 def string(s, index):
     m = re.match('"[^"]*"', s[index:])
     if m:
@@ -68,9 +67,22 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('1234.56789', 10), floating_point('1234.56789', 0))
         self.assertEqual(('234.56789', 10), floating_point('1234.56789', 1))
     def test_character(self):
-        pass
+        self.assertEqual(('ERROR: Expecting char, got ', 0), character('', 0))
+        self.assertEqual(('ERROR: Expecting char, got a', 0), character('ab', 0))
+        self.assertEqual(('ERROR: Expecting char, got \'', 0), character('\'ab\'', 0))
+        self.assertEqual(('ERROR: Expecting char, got \'', 0), character('\'\'', 0))
+        self.assertEqual(('ERROR: Expecting char, got a', 1), character('\'a\'', 1))
+        self.assertEqual(('ERROR: Expecting char, got b', 0), character('bcd\'a\'', 0))
+        self.assertEqual(('\'a\'', 3), character('\'a\'', 0))
+        self.assertEqual(('\'"\'', 3), character('\'"\'', 0))
     def test_string(self):
-        pass
+        self.assertEqual(('ERROR: Expecting String, got ', 0), string('', 0))
+        self.assertEqual(('ERROR: Expecting String, got a', 0), string('a""', 0))
+        self.assertEqual(('ERROR: Expecting String, got "', 0), string('"', 0))
+        self.assertEqual(('""', 2), string('""', 0))
+        self.assertEqual(('""', 2), string('"""', 0))
+        self.assertEqual(('""', 3), string('"""', 1))
+        self.assertEqual(('"Hello"', 8), string('""Hello"', 1))
     def test_boolean(self):
         pass
     def test_array(self):
