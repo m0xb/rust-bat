@@ -38,7 +38,9 @@ def boolean(s, index):
     m = re.match('(true|false)', s[index:])
     if m:
         token = m.group(0)
-        return (bool(token), index + len(token))
+        if token == 'true':
+            return (True, index + len(token))
+        return (False, index + len(token))
     else:
         return (f'ERROR: Expecting bool, got {s[index:index+1]}', index)
 
@@ -102,12 +104,12 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('ERROR: Expecting bool, got ', 0), boolean('', 0))
         self.assertEqual(('ERROR: Expecting bool, got r', 1), boolean('true', 1))
         self.assertEqual(('ERROR: Expecting bool, got a', 1), boolean('false', 1))
-        self.assertEqual((bool('true'), 4), boolean('true', 0))
-        self.assertEqual((bool('false'), 5), boolean('false', 0))
-        self.assertEqual((bool('true'), 4), boolean('truetruetruetrue', 0))
-        self.assertEqual((bool('true'), 8), boolean('truetruetruetrue', 4))
-        self.assertEqual((bool('false'), 5), boolean('falsefalsefalsefalse', 0))
-        self.assertEqual((bool('false'), 10), boolean('falsefalsefalsefalse', 5))
+        self.assertEqual((True, 4), boolean('true', 0))
+        self.assertEqual((False, 5), boolean('false', 0))
+        self.assertEqual((True, 4), boolean('truetruetruetrue', 0))
+        self.assertEqual((True, 8), boolean('truetruetruetrue', 4))
+        self.assertEqual((False, 5), boolean('falsefalsefalsefalse', 0))
+        self.assertEqual((False, 10), boolean('falsefalsefalsefalse', 5))
 
     def test_array(self):
         self.assertEqual(('ERROR: Expecting [, got ', 0), array('', 0))
