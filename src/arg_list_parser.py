@@ -54,7 +54,9 @@ def array(s, index):
     else:
         return (s.split(), index + 2)
 
-# def parse_araay(s, index):
+def parse_scalar_literal(s, index):
+    pass
+
 
 class TestLiteralFunctions(unittest.TestCase):
     def test_interger(self):
@@ -116,6 +118,13 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(([1], 3), array('[1]', 0))
         self.assertEqual(([1, 2, 2], 9), array('[1, 2, 2]', 0))
 
+    def test_parse_scalar_literal(self):
+        self.assertEqual((12345, 5), parse_scalar_literal('12345', 0))
+        self.assertEqual((123.456, 7), parse_scalar_literal('123.456', 0))
+        self.assertEqual(('\'c\'', 3), parse_scalar_literal('\'c\'', 0))
+        self.assertEqual((''"Hi Alice!"'', 9), parse_scalar_literal(''"Hi Alice"'', 0))
+        self.assertEqual((False, 5), parse_scalar_literal('false', 0))
+        self.assertEqual(([1, 2, 3], 9), parse_scalar_literal('[1, 2, 3]', 0))
 
 if __name__ == '__main__':
     unittest.main()
