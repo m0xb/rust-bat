@@ -38,9 +38,7 @@ def boolean(s, index):
     m = re.match('(true|false)', s[index:])
     if m:
         token = m.group(0)
-        if token == 'true':
-            return (True, index + len(token))
-        return (False, index + len(token))
+        return (token == 'true', index + len(token))
     else:
         return (f'ERROR: Expecting bool, got {s[index:index+1]}', index)
 
