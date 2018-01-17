@@ -42,20 +42,27 @@ def boolean(s, index):
     else:
         return (f'ERROR: Expecting bool, got {s[index:index+1]}', index)
 
-
 def array(s, index):
-    if len(s) > 1 and s[index] == '[':
-        s = s[1:-1]
+    if index < len(s) and s[index] == '[':
+        parsed_array = []
+        s_index = index + 1
+        while s_index < len(s):
+            (value, new_index) = parse_scalar_literal(s, s_index)
+            if s_index == new_index:
+                return (parsed_array, s_index + 1)
+            else:
+                parsed_array.append(value)
+                s_index = new_index
+            if s[s_index] == ',':
+                s_index += 1
+                if s[s_index] == ' ':
+                    s_index += 1
+            if s[s_index] == ']':
+                return (parsed_array, s_index + 1)
     else:
-        return (f'ERROR: Expecting [, got {s[index:index+1]}', index)
-    if index < len(s):
-        parsed_ints = [integer(s.strip(), 0)[0] for s in s.split(',')]
-        return (parsed_ints, index + len(s) + 2)
-    else:
-        return (s.split(), index + 2)
+        return ('ERROR: Not an array.', index)
 
 def parse_scalar_literal(s, index):
-    # literal_list = [integer(s, index), floating_point(s, index), character(s, index), string(s, index), boolean(s, index)]
     literal_list = [parse_fn(s, index) for parse_fn in [integer, floating_point, character, string, boolean]]
     largest_index = 0
     for tuple in literal_list:
@@ -119,11 +126,12 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual((False, 10), boolean('falsefalsefalsefalse', 5))
 
     def test_array(self):
-        self.assertEqual(('ERROR: Expecting [, got ', 0), array('', 0))
-        self.assertEqual(('ERROR: Expecting [, got ]', 0), array(']', 0))
-        self.assertEqual(([], 2), array('[]', 0))
-        self.assertEqual(([1], 3), array('[1]', 0))
-        self.assertEqual(([1, 2, 2], 9), array('[1, 2, 2]', 0))
+        # self.assertEqual(('ERROR: Expecting [, got ', 0), array('', 0))
+        # self.assertEqual(('ERROR: Expecting [, got ]', 0), array(']', 0))
+         self.assertEqual(([], 2), array('[]', 0))
+         self.assertEqual(([1], 3), array('[1]', 0))
+         self.assertEqual(([1, 2, 2], 9), array('[1, 2, 2]', 0))
+
 
     def test_parse_scalar_literal(self):
         self.assertEqual((12345, 5), parse_scalar_literal('12345', 0))
@@ -131,7 +139,6 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('\'c\'', 3), parse_scalar_literal('\'c\'', 0))
         self.assertEqual(('"Hi Alice!"', 11), parse_scalar_literal('"Hi Alice!"', 0))
         self.assertEqual((False, 5), parse_scalar_literal('false', 0))
-        # self.assertEqual(([1, 2, 3], 9), parse_scalar_literal('[1, 2, 3]', 0))
 
 if __name__ == '__main__':
     unittest.main()
