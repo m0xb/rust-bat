@@ -55,7 +55,8 @@ def array(s, index):
         return (s.split(), index + 2)
 
 def parse_scalar_literal(s, index):
-    literal_list = [integer(s, index), floating_point(s, index), character(s, index), string(s, index), boolean(s, index)]
+    # literal_list = [integer(s, index), floating_point(s, index), character(s, index), string(s, index), boolean(s, index)]
+    literal_list = [parse_fn(s, index) for parse_fn in [integer, floating_point, character, string, boolean]]
     largest_index = 0
     for tuple in literal_list:
         if tuple[1] > largest_index:
