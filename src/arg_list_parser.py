@@ -14,7 +14,7 @@ def floating_point(s, index):
     m = re.match('-?([0-9]+\.[0-9]*)', s[index:])
     if m:
         token = m.group(0)
-        return (token, index + len(token))
+        return (float(token), index + len(token))
     else:
         return (f'ERROR: Expecting float, got {s[index:index+1]}', index)
 
@@ -38,7 +38,7 @@ def boolean(s, index):
     m = re.match('(true|false)', s[index:])
     if m:
         token = m.group(0)
-        return (token, index + len(token))
+        return (bool(token), index + len(token))
     else:
         return (f'ERROR: Expecting bool, got {s[index:index+1]}', index)
 
@@ -71,12 +71,12 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('ERROR: Expecting float, got ', 4), floating_point('', 4))
         self.assertEqual(('ERROR: Expecting float, got ', 4), floating_point('1.0', 4))
         self.assertEqual(('ERROR: Expecting float, got .', 0), floating_point('.234', 0))
-        self.assertEqual(('1.', 2), floating_point('1.', 0))
-        self.assertEqual(('1.', 2), floating_point('1..0', 0))
-        self.assertEqual(('1.1', 3), floating_point('1.1', 0))
-        self.assertEqual(('1234.0', 6), floating_point('1234.0', 0))
-        self.assertEqual(('1234.56789', 10), floating_point('1234.56789', 0))
-        self.assertEqual(('234.56789', 10), floating_point('1234.56789', 1))
+        self.assertEqual((1., 2), floating_point('1.', 0))
+        self.assertEqual((1., 2), floating_point('1..0', 0))
+        self.assertEqual((1.1, 3), floating_point('1.1', 0))
+        self.assertEqual((1234.0, 6), floating_point('1234.0', 0))
+        self.assertEqual((1234.56789, 10), floating_point('1234.56789', 0))
+        self.assertEqual((234.56789, 10), floating_point('1234.56789', 1))
 
     def test_character(self):
         self.assertEqual(('ERROR: Expecting char, got ', 0), character('', 0))
@@ -102,12 +102,12 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('ERROR: Expecting bool, got ', 0), boolean('', 0))
         self.assertEqual(('ERROR: Expecting bool, got r', 1), boolean('true', 1))
         self.assertEqual(('ERROR: Expecting bool, got a', 1), boolean('false', 1))
-        self.assertEqual(('true', 4), boolean('true', 0))
-        self.assertEqual(('false', 5), boolean('false', 0))
-        self.assertEqual(('true', 4), boolean('truetruetruetrue', 0))
-        self.assertEqual(('true', 8), boolean('truetruetruetrue', 4))
-        self.assertEqual(('false', 5), boolean('falsefalsefalsefalse', 0))
-        self.assertEqual(('false', 10), boolean('falsefalsefalsefalse', 5))
+        self.assertEqual((bool('true'), 4), boolean('true', 0))
+        self.assertEqual((bool('false'), 5), boolean('false', 0))
+        self.assertEqual((bool('true'), 4), boolean('truetruetruetrue', 0))
+        self.assertEqual((bool('true'), 8), boolean('truetruetruetrue', 4))
+        self.assertEqual((bool('false'), 5), boolean('falsefalsefalsefalse', 0))
+        self.assertEqual((bool('false'), 10), boolean('falsefalsefalsefalse', 5))
 
     def test_array(self):
         self.assertEqual(('ERROR: Expecting [, got ', 0), array('', 0))
