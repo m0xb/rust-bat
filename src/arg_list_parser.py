@@ -60,9 +60,9 @@ def parse_scalar_literal(s, index):
     for tuple in literal_list:
         if tuple[1] > largest_index:
             largest_index = tuple[1]
-    for pos in range(len(literal_list)):
-        if literal_list[pos][1] == largest_index:
-            return literal_list[pos]
+    for final in literal_list:
+        if final[1] == largest_index:
+            return final
 
 class TestLiteralFunctions(unittest.TestCase):
     def test_interger(self):
