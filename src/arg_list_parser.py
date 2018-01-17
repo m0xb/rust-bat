@@ -131,6 +131,10 @@ class TestLiteralFunctions(unittest.TestCase):
          self.assertEqual(([], 2), array('[]', 0))
          self.assertEqual(([1], 3), array('[1]', 0))
          self.assertEqual(([1, 2, 2], 9), array('[1, 2, 2]', 0))
+         self.assertEqual((['\'a\'', '\'b\'', '\'c\'', '\'d\''], 20), array('[\'a\', \'b\', \'c\', \'d\']', 0))
+         self.assertEqual((['"Hello,"', '" there "', '"Dave!"'], 30), array('["Hello,", " there ", "Dave!"]', 0))
+         self.assertEqual(([1.2, 1., 2.3456], 17), array('[1.2, 1., 2.3456]', 0))
+         self.assertEqual(([True, False, True, False], 26), array('[true, false, true, false]', 0))
 
 
     def test_parse_scalar_literal(self):
