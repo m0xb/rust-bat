@@ -52,7 +52,7 @@ macro_rules! printbat {
     }
 
     if correct == total {
-    println!("\x1B[32m {} / {} ----- All Correct \n", correct, total,);
+    println!("\x1B[32m OK: {} / {} \n", correct, total,);
     print!("\x1B[0mm");
 }
     else {
