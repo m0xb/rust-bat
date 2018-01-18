@@ -33,7 +33,7 @@ macro_rules! printbat {
             print!("{}", padding);
         }
         let maybe_check = if i.0 { "✔" } else { "X" };
-        if maybe_check == "✔" {
+        if i.0 {
             correct += 1
         }
         if !i.0 {
