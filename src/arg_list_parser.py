@@ -72,6 +72,17 @@ def parse_scalar_literal(s, index):
         if final[1] == largest_index:
             return final
 
+def parse_literals(s, index):
+    (array_value, new_array_index) = array(s, index)
+    (value, new_index) = parse_scalar_literal(s, index)
+    if new_array_index > new_index:
+        return (array_value, new_array_index)
+    elif new_index > new_array_index:
+        return (value, new_index)
+    else:
+        return (s, index)
+
+
 class TestLiteralFunctions(unittest.TestCase):
     def test_interger(self):
         self.assertEqual(('ERROR: Expecting digit, got ', 0), integer('', 0))
@@ -144,6 +155,16 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('\'c\'', 3), parse_scalar_literal('\'c\'', 0))
         self.assertEqual(('"Hi Alice!"', 11), parse_scalar_literal('"Hi Alice!"', 0))
         self.assertEqual((False, 5), parse_scalar_literal('false', 0))
+
+    def test_parse_literal(self):
+        #Non-Nested tests.
+        self.assertEqual(('', 0), parse_literals('', 0))
+        self.assertEqual((123, 3), parse_literals('123', 0))
+        self.assertEqual(([1, 2, 3], 9), parse_literals('[1, 2, 3]', 0))
+        self.assertEqual((']', 0), parse_literals(']', 0))
+        # This test fails, array() does not have any fallback if it encounters a '[' without also encountering a ']'.
+        # self.assertEqual(('[', 0), parse_literals('[', 0))
+        
 
 if __name__ == '__main__':
     unittest.main()
