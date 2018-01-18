@@ -1,4 +1,4 @@
-
+use std::f32;
 macro_rules! printbat {
 ($bat:ident, $($($arg:expr),+ => $expectation:expr),+) => {{
     let mut rows = Vec::new();
@@ -23,14 +23,20 @@ macro_rules! printbat {
         column_widths.3 = cmp::max(actual_str.chars().count(), column_widths.3);
         rows.push((passed, invocation, expectation, actual_str));
     )+
+    let mut correct = 0;
+    let mut total = 0;
     for i in rows {
+        total += 1;
         fn render_cell(s: &str, cwidth: usize) {
             print!("{}", s);
             let width_delta = cwidth - s.chars().count();
             let padding = " ".repeat(width_delta);
             print!("{}", padding);
         }
-        let maybe_check = if i.0 { "✔" } else { "" };
+        let maybe_check = if i.0 { "✔" } else { "X" };
+        if maybe_check == "✔" {
+            correct += 1
+        }
         if !i.0 {
             print!("\x1B[31m")
         }
@@ -45,5 +51,13 @@ macro_rules! printbat {
         }
         println!();
     }
-}}
+
+    if correct == total {
+    println!("\x1B[32m {} / {} ----- All Correct \n", correct, total,);
+}
+    else {
+    println!("\x1B[31m FAILURES: {} / {}, you missed: {} \n", correct, total, total - correct);
+    }
+}
+}
 }
