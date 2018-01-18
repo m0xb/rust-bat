@@ -62,12 +62,27 @@ def array(s, index):
     else:
         return ('ERROR: Not an array.', index)
 
-# def parse_tuple(s, index):
-#     if index < len(s) and s[index] == '(':
-#         parsed_tuple = ()
-#         s_index = index + 1
-#         while s_index < len(s):
-#             (value, new_index) = parse_literals(s, s_index)
+def parse_tuple(s, index):
+    if index < len(s) and s[index] == '(':
+        # Initially a list as tuples are immutable, will be converted to a tuple when returned.
+        parsed_tuple = []
+        s_index = index + 1
+        while s_index < len(s):
+            (value, new_index) = parse_literals(s, s_index)
+            if s_index == new_index:
+                return (tuple(parsed_tuple), s_index + 1)
+            else:
+                parsed_tuple.append(value)
+                s_index = new_index
+            if s[s_index] == ',':
+                s_index += 1
+                if s[s_index] == ' ':
+                    s_index += 1
+            if s[s_index] == ')':
+                return (tuple(parsed_tuple), s_index + 1)
+    else:
+        return('ERROR: Not a tuple.', index)
+
 
 def parse_scalar_literal(s, index):
     literal_list = [parse_fn(s, index) for parse_fn in [integer, floating_point, character, string, boolean]]
@@ -82,13 +97,15 @@ def parse_scalar_literal(s, index):
 def parse_literals(s, index):
     (value, new_index) = parse_scalar_literal(s, index)
     (array_value, new_array_index) = array(s, index)
-    if new_array_index > new_index:
+    (tuple_value, new_tuple_index) = parse_tuple(s, index)
+    if new_array_index > max(new_index, new_tuple_index):
         return (array_value, new_array_index)
-    elif new_index > new_array_index:
+    elif new_tuple_index > max(new_index, new_array_index):
+        return (tuple_value, new_tuple_index)
+    elif new_index > max(new_array_index, new_tuple_index):
         return (value, new_index)
     else:
         return (s, index)
-
 
 class TestLiteralFunctions(unittest.TestCase):
     def test_interger(self):
@@ -168,10 +185,22 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('', 0), parse_literals('', 0))
         self.assertEqual((123, 3), parse_literals('123', 0))
         self.assertEqual(([1, 2, 3], 9), parse_literals('[1, 2, 3]', 0))
+       #Nested Tests
         self.assertEqual(([1, 2, 3, [1, 2.2, [1]]], 24), parse_literals('[1, 2, 3, [1, 2.2, [1]]]', 0))
         self.assertEqual((']', 0), parse_literals(']', 0))
+        self.assertEqual(([1, (1, 2, 3)], 14), parse_literals('[1, (1, 2, 3)]', 0))
+        self.assertEqual(([1, 2, 2, [2, (3, 4)]], 22), parse_literals('[1, 2, 2, [2, (3, 4)]]', 0))
+        self.assertEqual(([1, 2, 2, [2, (3, 4, [5])]], 26), parse_literals('[1, 2, 2, [2, (3, 4,[5])]]', 0))
+
         # This test fails, array() does not have any fallback if it encounters a '[' without also encountering a ']'.
         # self.assertEqual(('[', 0), parse_literals('[', 0))
+
+    def test_parse_tuple(self):
+        self.assertEqual(((), 2), parse_tuple('()', 0))
+        #This is an interesting result.
+        self.assertEqual(((1,), 3), parse_tuple('(1)', 0))
+        self.assertEqual(((1, 2), 6), parse_tuple('(1, 2)', 0))
+
 
 
 if __name__ == '__main__':
