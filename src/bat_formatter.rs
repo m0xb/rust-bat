@@ -1,4 +1,3 @@
-use std::f32;
 macro_rules! printbat {
 ($bat:ident, $($($arg:expr),+ => $expectation:expr),+) => {{
     let mut rows = Vec::new();
@@ -54,9 +53,11 @@ macro_rules! printbat {
 
     if correct == total {
     println!("\x1B[32m {} / {} ----- All Correct \n", correct, total,);
+    print!("\x1B[0mm");
 }
     else {
     println!("\x1B[31m FAILURES: {} / {}, you missed: {} \n", correct, total, total - correct);
+    print!("\x1B[0mm");
     }
 }
 }
