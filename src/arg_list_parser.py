@@ -47,7 +47,7 @@ def array(s, index):
         parsed_array = []
         s_index = index + 1
         while s_index < len(s):
-            (value, new_index) = parse_scalar_literal(s, s_index)
+            (value, new_index) = parse_literals(s, s_index)
             if s_index == new_index:
                 return (parsed_array, s_index + 1)
             else:
@@ -62,6 +62,13 @@ def array(s, index):
     else:
         return ('ERROR: Not an array.', index)
 
+# def parse_tuple(s, index):
+#     if index < len(s) and s[index] == '(':
+#         parsed_tuple = ()
+#         s_index = index + 1
+#         while s_index < len(s):
+#             (value, new_index) = parse_literals(s, s_index)
+
 def parse_scalar_literal(s, index):
     literal_list = [parse_fn(s, index) for parse_fn in [integer, floating_point, character, string, boolean]]
     largest_index = 0
@@ -73,8 +80,8 @@ def parse_scalar_literal(s, index):
             return final
 
 def parse_literals(s, index):
-    (array_value, new_array_index) = array(s, index)
     (value, new_index) = parse_scalar_literal(s, index)
+    (array_value, new_array_index) = array(s, index)
     if new_array_index > new_index:
         return (array_value, new_array_index)
     elif new_index > new_array_index:
@@ -161,10 +168,11 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('', 0), parse_literals('', 0))
         self.assertEqual((123, 3), parse_literals('123', 0))
         self.assertEqual(([1, 2, 3], 9), parse_literals('[1, 2, 3]', 0))
+        self.assertEqual(([1, 2, 3, [1, 2.2, [1]]], 24), parse_literals('[1, 2, 3, [1, 2.2, [1]]]', 0))
         self.assertEqual((']', 0), parse_literals(']', 0))
         # This test fails, array() does not have any fallback if it encounters a '[' without also encountering a ']'.
         # self.assertEqual(('[', 0), parse_literals('[', 0))
-        
+
 
 if __name__ == '__main__':
     unittest.main()
