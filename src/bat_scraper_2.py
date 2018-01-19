@@ -2,9 +2,8 @@ import unittest
 import re
 import requests
 from bs4 import BeautifulSoup
-#SIM
 import arg_list_parser
-print("SIM TUPLE: " + str(arg_list_parser.parse_tuple("('sexy boi', 'buggets', 925826, \"\", [], [], [[[[[[]]]]]], [[], []])",0)))
+# print("SIM TUPLE: " + str(arg_list_parser.parse_tuple("('sexy boi', 'buggets', 925826, \"\", [], [], [[[[[[]]]]]], [[], []])",0)))
 
 def get_bat(pid):
     response = requests.post(f'http://codingbat.com/prob/{pid}')
@@ -43,89 +42,14 @@ def submit_code(code, pid):
     return row_list[0:-1]
 
 def get_expected(row):
-    # return re.search('→ ([A-Za-z0-9"[\]()!.?:;/\\\\, @$%^&*#]*)', row).group(1)
     return re.search('→ (.*)', row).group(1)
+
+def get_fn_name(row):
+    return re.search('([^(]*)', row).group(0)
 
 def get_invocation(row):
     inv = re.search('(\(.*\))', row).group(1)
     return arg_list_parser.parse_literals(inv, 0)[0]
 
-pid = 'p105136'
-bat = get_bat(pid)
-print(bat)
-print(get_type(bat))
-a = generate_code(bat, generate_return(get_type(bat)))
-print(a)
-b = submit_code(a, pid)
-print(b)
-for row in b:
-    print(get_expected(row))
-for row in b:
-    print(get_invocation(row))
 
-# class Test_get_type(unittest.TestCase):
-#     def test_bool(self):
-#         self.assertEqual('boolean', get_type('public boolean lucky13(int[] nums) {}'))
-#     def test_list_int(self):
-#         self.assertEqual('List<Integer>', get_type('public List<Integer> no9(List<Integer> nums) {}'))
-#     def test_list_string(self):
-#         self.assertEqual('List<String>', get_type('public List<String> noYY(List<String> strings) {}'))
-#     def test_string_array(self):
-#         self.assertEqual('String[]', get_type('public String[] fizzBuzz(int start, int end) {}'))
-#     def test_int_array(self):
-#         self.assertEqual('int[]', get_type('public int[] fizzArray(int n) {}'))
-#     def test_bool_array(self):
-#         #Not from a bat
-#         self.assertEqual('boolean[]', get_type('private static boolean[] boolMaster(boolean[] bools_for_fools) {}'))
-#     def test_char_array(self):
-#         #Not from a bat
-#         self.assertEqual('char[]', get_type('protected final char[] charCarp(int a, int b) {}'))
-#     def test_char(self):
-#         #Not from a bat
-#         self.assertEqual('char', get_type('public final char charCar(int a) {]'))
-#     def test_int(self):
-#         self.assertEqual('int', get_type('public int diff21(int n) {}'))
-#     def test_string(self):
-#         self.assertEqual('String', get_type('public String nonStart(String a, String b) {}'))
-#     def test_float(self):
-#         #Not from a bat
-#         self.assertEqual('float', get_type('public float floaty(float a, float b) {}'))
-#
-# class Test_generate_return(unittest.TestCase):
-#     def test_int(self):
-#         self.assertEqual('return 0;', generate_return('int'))
-#     def test_String(self):
-#         self.assertEqual('String a = "hello"; return a;', generate_return('String'))
-#     def test_char(self):
-#         self.assertEqual('char a = \'a\'; return a;', generate_return('char'))
-#     def test_bool(self):
-#         self.assertEqual('return true;', generate_return('boolean'))
-#     def test_float(self):
-#         self.assertEqual('a = 2.0; return a;', generate_return('float'))
-#     def test_List_int(self):
-#         pass
-#     def test_List_String(self):
-#         pass
-#     def test_array_int(self):
-#         pass
-#     def test_array_String(self):
-#         pass
-#     def test_array_char(self):
-#         pass
-#     def test_array_bool(self):
-#         self.assertEqual('boolean[] a = {true}; return a;', generate_return('boolean[]'))
-#     def test_array_float(self):
-#         pass
-#
-# class Test_generate_code(unittest.TestCase):
-#     def test_cigarParty(self):
-#         self.assertEqual('public boolean cigarParty(int cigars, boolean isWeekend) {a = true; return a;}', generate_code('public boolean cigarParty(int cigars, boolean isWeekend) {}', 'a = true; return a;'))
-#
-# class Test_expected(unittest.TestCase):
-#     def test_repeatFront(self):
-#         self.assertEqual('"JavaJavJaJ"', get_expected('repeatFront("Java", 4) → "JavaJavJaJ"'))
-#
-#
-# if __name__ == '__main__':
-#     unittest.main()
 
