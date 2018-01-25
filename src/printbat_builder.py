@@ -3,8 +3,8 @@ def build_input(pid):
     #bat, type and signature are used to build the code variable, which in turn will be submitted to CodingBats to get the results table.
     bat = bat_scraper_2.get_bat(pid)
     type = bat_scraper_2.get_type(bat)
-    signature = bat_scraper_2.generate_return(type)
-    code = bat_scraper_2.generate_code(bat, signature)
+    return_statement = bat_scraper_2.generate_return(type)
+    code = bat_scraper_2.generate_code(bat, return_statement)
     #Response is a list of strings, containing the rows from the results table on the CodingBats website.
     responses = bat_scraper_2.submit_code(code, pid)
     fn_name = bat_scraper_2.get_fn_name(responses[0])
@@ -17,16 +17,21 @@ def build_input(pid):
         expectation_list.append(bat_scraper_2.get_expected(row))
     return (fn_name, invocation_list, expectation_list)
 
-def build_string(tup):
-    macro_invocation = f'''\nprintbat!({tup[0]},
+print(build_input('p168295'))
+
+def build_macro_invocation(args):
+    macro_invocation = f'''\nprintbat!({args[0]},
     '''
     #Argument positions in invocation_list which are vecs.
     vec_list = []
-    for index in range(len(tup[1][0])):
-        if isinstance(tup[1][0][index], list):
+    for index in range(len(args[1][0])):
+        if isinstance(args[1][0][index], list):
             vec_list.append(index)
     #Number of tests for a particular pid.
-    item_count = len(tup[1])
+    item_count = len(args[1])
+    
+
+
     # for i in range(item_count):
     #     for j in tup[1][i]:
     #         if tup[1][i][j] in vec_list and i < item_count - 1:
