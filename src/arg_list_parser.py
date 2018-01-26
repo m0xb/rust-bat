@@ -17,7 +17,8 @@ class Expression(AstElement):
 class IntegerLiteral(Expression):
     def __init__(self, intx):
         self.intx = intx
-
+        if not isinstance(intx, int):
+            raise Exception(f'Expected integer as argument, got {intx}')
     def __str__(self):
         pass
 
@@ -46,16 +47,46 @@ class CharLiteral(Expression):
 
 
 class StringLiteral(Expression):
-    pass
+    def __init__(self, stringx):
+        self.stringx = stringx
+
+    def __str__(self):
+        pass
+
+    def to_rust_code(self):
+        pass
 
 class ArrayLiteral(Expression):
-    pass
+    def __init__(self, arrayx):
+        self.arrayx = arrayx
+
+    def __str__(self):
+        pass
+
+    def to_rust_code(self):
+        pass
 
 class BooleanLiteral(Expression):
-    pass
+    def __init__(self, boolx):
+        self.boolx = boolx
+
+    def __str__(self):
+        pass
+
+    def to_rust_code(self):
+        pass
 
 class TupleLiteral(Expression):
-    pass
+    def __init__(self, tuplex):
+        self.tuplex = tuplex
+        if not isinstance(tuplex, tuple):
+            raise Exception(f'Expected tuple as argument, got {tuplex}')
+
+    def __str__(self):
+        pass
+
+    def to_rust_code(self):
+        pass
 
 
 def integer(s, index):
@@ -86,7 +117,7 @@ def string(s, index):
     m = re.match('"[^"]*"', s[index:])
     if m:
         token = m.group(0)
-        return (token, index + len(token))
+        return (StringLiteral(token), index + len(token))
     else:
         return (f'ERROR: Expecting String, got {s[index:index+1]}', index)
 
@@ -94,7 +125,7 @@ def boolean(s, index):
     m = re.match('(true|false)', s[index:])
     if m:
         token = m.group(0)
-        return (token == 'true', index + len(token))
+        return (BooleanLiteral(token == 'true'), index + len(token))
     else:
         return (f'ERROR: Expecting bool, got {s[index:index+1]}', index)
 
@@ -105,7 +136,7 @@ def array(s, index):
         while s_index < len(s):
             (value, new_index) = parse_literals(s, s_index)
             if s_index == new_index:
-                return (parsed_array, s_index + 1)
+                return (ArrayLiteral(parsed_array), s_index + 1)
             else:
                 parsed_array.append(value)
                 s_index = new_index
@@ -114,7 +145,7 @@ def array(s, index):
                 if s[s_index] == ' ':
                     s_index += 1
             if s[s_index] == ']':
-                return (parsed_array, s_index + 1)
+                return (ArrayLiteral(parsed_array), s_index + 1)
     else:
         return ('ERROR: Not an array.', index)
 
@@ -126,7 +157,7 @@ def parse_tuple(s, index):
         while s_index < len(s):
             (value, new_index) = parse_literals(s, s_index)
             if s_index == new_index:
-                return (tuple(parsed_tuple), s_index + 1)
+                return (TupleLiteral(tuple(parsed_tuple)), s_index + 1)
             else:
                 parsed_tuple.append(value)
                 s_index = new_index
@@ -135,7 +166,7 @@ def parse_tuple(s, index):
                 if s[s_index] == ' ':
                     s_index += 1
             if s[s_index] == ')':
-                return (tuple(parsed_tuple), s_index + 1)
+                return (TupleLiteral(tuple(parsed_tuple)), s_index + 1)
     else:
         return('ERROR: Not a tuple.', index)
 

@@ -19,16 +19,16 @@ def build_input(pid):
 
 print(build_input('p168295'))
 
-def build_macro_invocation(args):
-    macro_invocation = f'''\nprintbat!({args[0]},
-    '''
-    #Argument positions in invocation_list which are vecs.
-    vec_list = []
-    for index in range(len(args[1][0])):
-        if isinstance(args[1][0][index], list):
-            vec_list.append(index)
-    #Number of tests for a particular pid.
-    item_count = len(args[1])
+# def build_macro_invocation(args):
+#     macro_invocation = f'''\nprintbat!({args[0]},
+#     '''
+#     #Argument positions in invocation_list which are vecs.
+#     vec_list = []
+#     for index in range(len(args[1][0])):
+#         if isinstance(args[1][0][index], list):
+#             vec_list.append(index)
+#     #Number of tests for a particular pid.
+#     item_count = len(args[1])
     
 
 
