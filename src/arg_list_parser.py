@@ -2,11 +2,67 @@
 import re
 import unittest
 
+#AST Enhancement
+
+class AstElement:
+    pass
+
+class Expression(AstElement):
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
+
+class IntegerLiteral(Expression):
+    def __init__(self, intx):
+        self.intx = intx
+
+    def __str__(self):
+        pass
+
+    def to_rust_code(self):
+        pass
+
+class FloatLiteral(Expression):
+    def __init__(self, floatx):
+        self.floatx = floatx
+
+    def __str__(self):
+        pass
+
+    def to_rust_code(self):
+        pass
+
+class CharLiteral(Expression):
+    def __init__(self, charx):
+        self.charx = charx
+
+    def __str__(self):
+         pass
+
+    def to_rust_code(self):
+        pass
+
+
+class StringLiteral(Expression):
+    pass
+
+class ArrayLiteral(Expression):
+    pass
+
+class BooleanLiteral(Expression):
+    pass
+
+class TupleLiteral(Expression):
+    pass
+
+
 def integer(s, index):
     m = re.match('-?([0-9]+)', s[index:])
     if m:
         token = m.group(0)
-        return (int(token), index + len(token))
+        return (IntegerLiteral(int(token)), index + len(token))
     else:
         return (f'ERROR: Expecting digit, got {s[index:index+1]}', index)
 
@@ -14,7 +70,7 @@ def floating_point(s, index):
     m = re.match('-?([0-9]+\.[0-9]*)', s[index:])
     if m:
         token = m.group(0)
-        return (float(token), index + len(token))
+        return (FloatLiteral(float(token)), index + len(token))
     else:
         return (f'ERROR: Expecting float, got {s[index:index+1]}', index)
 
@@ -22,7 +78,7 @@ def character(s, index):
     m = re.match('\'[^\']\'', s[index:])
     if m:
         token = m.group(0)
-        return (token, index + len(token))
+        return (CharLiteral(token), index + len(token))
     else:
         return (f'ERROR: Expecting char, got {s[index:index+1]}', index)
 
