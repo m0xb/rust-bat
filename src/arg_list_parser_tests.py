@@ -45,7 +45,7 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual((StringLiteral('""'), 2), arg_list_parser.string('"""', 0))
         self.assertEqual((StringLiteral('""'), 3), arg_list_parser.string('"""', 1))
         self.assertEqual((StringLiteral('"Hello"'), 8), arg_list_parser.string('""Hello"', 1))
-    
+
     def test_boolean(self):
         self.assertEqual(('ERROR: Expecting bool, got ', 0), arg_list_parser.boolean('', 0))
         self.assertEqual(('ERROR: Expecting bool, got r', 1), arg_list_parser.boolean('true', 1))
@@ -173,6 +173,18 @@ class TestCharLiteral(unittest.TestCase):
         self.assertFalse(CharLiteral('a') != CharLiteral('a'))
         self.assertTrue(CharLiteral('a') != CharLiteral('b'))
         self.assertTrue(CharLiteral('H') != 'H')
+
+class Test_to_rust_code(unittest.TestCase):
+    def test_stringification(self):
+        self.assertEqual('1', arg_list_parser.IntegerLiteral(1).to_rust_code())
+        self.assertEqual('vec![1, 2, 3]', arg_list_parser.ArrayLiteral([1, 2, 3]).to_rust_code())
+        self.assertEqual("Hello", arg_list_parser.StringLiteral("Hello").to_rust_code())
+        self.assertEqual('c', arg_list_parser.CharLiteral('c').to_rust_code())
+        self.assertEqual('1.234', arg_list_parser.FloatLiteral(1.234).to_rust_code())
+        self.assertEqual('(1, 2, 3)', arg_list_parser.TupleLiteral((1, 2, 3)).to_rust_code())
+        self.assertEqual('true', arg_list_parser.BooleanLiteral(True).to_rust_code())
+
+
 
 if __name__ == '__main__':
     unittest.main()
