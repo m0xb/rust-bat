@@ -41,10 +41,10 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual(('ERROR: Expecting String, got a', 0), arg_list_parser.string('a""', 0))
         self.assertEqual(('ERROR: Expecting String, got ', 4), arg_list_parser.string('a""', 4))
         self.assertEqual(('ERROR: Expecting String, got "', 0), arg_list_parser.string('"', 0))
-        self.assertEqual((StringLiteral('""'), 2), arg_list_parser.string('""', 0))
-        self.assertEqual((StringLiteral('""'), 2), arg_list_parser.string('"""', 0))
-        self.assertEqual((StringLiteral('""'), 3), arg_list_parser.string('"""', 1))
-        self.assertEqual((StringLiteral('"Hello"'), 8), arg_list_parser.string('""Hello"', 1))
+        self.assertEqual((StringLiteral(""), 2), arg_list_parser.string('""', 0))
+        self.assertEqual((StringLiteral(""), 2), arg_list_parser.string('"""', 0))
+        self.assertEqual((StringLiteral(""), 3), arg_list_parser.string('"""', 1))
+        self.assertEqual((StringLiteral("Hello"), 8), arg_list_parser.string('""Hello"', 1))
 
     def test_boolean(self):
         self.assertEqual(('ERROR: Expecting bool, got ', 0), arg_list_parser.boolean('', 0))
@@ -68,9 +68,9 @@ class TestLiteralFunctions(unittest.TestCase):
             CharLiteral('\'d\'')]
         ), 20), arg_list_parser.array('[\'a\', \'b\', \'c\', \'d\']', 0))
         self.assertEqual((ArrayLiteral([
-            StringLiteral('"Hello,"'),
-            StringLiteral('" there "'),
-            StringLiteral('"Dave!"')]
+            StringLiteral("Hello,"),
+            StringLiteral(" there "),
+            StringLiteral("Dave!")]
         ), 30), arg_list_parser.array('["Hello,", " there ", "Dave!"]', 0))
         self.assertEqual((ArrayLiteral([
             FloatLiteral(1.2),
@@ -87,7 +87,7 @@ class TestLiteralFunctions(unittest.TestCase):
             BooleanLiteral(True),
             IntegerLiteral(12345),
             CharLiteral("\'a\'"),
-            StringLiteral('"SAD"'),
+            StringLiteral("SAD"),
             BooleanLiteral(False),
             FloatLiteral(1.234)]
         ), 39), arg_list_parser.array('[true, 12345, \'a\', "SAD", false, 1.234]', 0))
@@ -105,7 +105,7 @@ class TestLiteralFunctions(unittest.TestCase):
         self.assertEqual((IntegerLiteral(12345), 5), arg_list_parser.parse_scalar_literal('12345', 0))
         self.assertEqual((FloatLiteral(123.456), 7), arg_list_parser.parse_scalar_literal('123.456', 0))
         self.assertEqual((CharLiteral('\'c\''), 3), arg_list_parser.parse_scalar_literal('\'c\'', 0))
-        self.assertEqual((StringLiteral('"Hi Alice!"'), 11), arg_list_parser.parse_scalar_literal('"Hi Alice!"', 0))
+        self.assertEqual((StringLiteral("Hi Alice!"), 11), arg_list_parser.parse_scalar_literal('"Hi Alice!"', 0))
         self.assertEqual((BooleanLiteral(False), 5), arg_list_parser.parse_scalar_literal('false', 0))
 
     def test_parse_literal(self):
@@ -183,6 +183,23 @@ class Test_to_rust_code(unittest.TestCase):
         self.assertEqual('1.234', arg_list_parser.FloatLiteral(1.234).to_rust_code())
         self.assertEqual('(1, 2, 3)', arg_list_parser.TupleLiteral((1, 2, 3)).to_rust_code())
         self.assertEqual('true', arg_list_parser.BooleanLiteral(True).to_rust_code())
+
+class TestStr(unittest.TestCase):
+    def test_str(self):
+        self.assertEqual('TupleLiteral()', str(TupleLiteral(())))
+        self.assertEqual('ArrayLiteral()', str(ArrayLiteral([])))
+        self.assertEqual('IntegerLiteral(1)', str(IntegerLiteral(1)))
+        self.assertEqual('StringLiteral("Hello")', str(StringLiteral('Hello')))
+        self.assertEqual('BooleanLiteral(true)', str(BooleanLiteral(True)))
+        self.assertEqual('CharLiteral(\'a\')', str(CharLiteral('a')))
+        self.assertEqual('FloatLiteral(1.1)', str(FloatLiteral(1.1)))
+
+
+    def test_complex(self):
+        self.assertEqual('ArrayLiteral(StringLiteral("Hello"))', str(arg_list_parser.array('["Hello"]', 0)[0]))
+
+        my_tuple = arg_list_parser.parse_tuple('(1, 2.2, [2, "Hello"])', 0)
+        self.assertEqual('TupleLiteral(IntegerLiteral(1), FloatLiteral(2.2), ArrayLiteral(IntegerLiteral(2), StringLiteral("Hello")))', str(my_tuple[0]))
 
 
 

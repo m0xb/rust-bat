@@ -13,7 +13,8 @@ class Expression(AstElement):
         if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         else:
-            return False
+            return
+
 
 class IntegerLiteral(Expression):
     def __init__(self, intx):
@@ -21,7 +22,7 @@ class IntegerLiteral(Expression):
         if not isinstance(intx, int):
             raise Exception(f'Expected integer as argument, got {intx}')
     def __str__(self):
-        return self.__str__()
+        return 'IntegerLiteral(' + str(self.intx) + ')'
 
     def to_rust_code(self):
         return f'{self.intx}'
@@ -31,7 +32,7 @@ class FloatLiteral(Expression):
         self.floatx = floatx
 
     def __str__(self):
-        return self.__str__()
+        return 'FloatLiteral(' + str(self.floatx) + ')'
 
     def to_rust_code(self):
         return f'{self.floatx}'
@@ -41,7 +42,7 @@ class CharLiteral(Expression):
         self.charx = charx
 
     def __str__(self):
-         return self.__str__()
+         return 'CharLiteral(\'' + str(self.charx) + '\')'
 
     def to_rust_code(self):
         return f'{self.charx}'
@@ -52,30 +53,38 @@ class StringLiteral(Expression):
         self.stringx = stringx
 
     def __str__(self):
-        return self.__str__()
+        return 'StringLiteral("' + self.stringx + '")'
 
     def to_rust_code(self):
         return f'{self.stringx}'
-
-class ArrayLiteral(Expression):
-    def __init__(self, arrayx):
-        self.arrayx = arrayx
-
-    def __str__(self):
-        return self.__str__()
-
-    def to_rust_code(self):
-        return f'vec!{self.arrayx}'
 
 class BooleanLiteral(Expression):
     def __init__(self, boolx):
         self.boolx = boolx
 
     def __str__(self):
-        return self.__str__()
+        return 'BooleanLiteral(' + str(self.boolx).lower() + ')'
 
     def to_rust_code(self):
         return f'{self.boolx}'.lower()
+
+class ArrayLiteral(Expression):
+    def __init__(self, arrayx):
+        self.arrayx = arrayx
+
+    def __str__(self):
+        string = 'ArrayLiteral('
+        count = 0
+        for elem in self.arrayx:
+            if count < len(self.arrayx) - 1:
+                string += str(elem) + ', '
+                count += 1
+            else:
+                string += str(elem)
+        return string + ')'
+
+    def to_rust_code(self):
+        return f'vec!{self.arrayx}'
 
 class TupleLiteral(Expression):
     def __init__(self, tuplex):
@@ -84,7 +93,15 @@ class TupleLiteral(Expression):
             raise Exception(f'Expected tuple as argument, got {tuplex}')
 
     def __str__(self):
-        return self.__str__()
+        string = 'TupleLiteral('
+        count = 0
+        for elem in self.tuplex:
+            if count < len(self.tuplex) - 1:
+                string += str(elem) + ', '
+                count += 1
+            else:
+                string += str(elem)
+        return string + ')'
 
     def to_rust_code(self):
         return f'{self.tuplex}'
@@ -118,7 +135,7 @@ def string(s, index):
     m = re.match('"[^"]*"', s[index:])
     if m:
         token = m.group(0)
-        return (StringLiteral(token), index + len(token))
+        return (StringLiteral(token[1:-1]), index + len(token))
     else:
         return (f'ERROR: Expecting String, got {s[index:index+1]}', index)
 
@@ -203,4 +220,4 @@ print(my_tuple)
 #Outside of practicing with the syntax of inheritance in Python, what does the AstElement class do?  Does its lack of code have anything to do with why I can't get __str__ to work right?
 #to_rust_code() is also not working, but I think this is due to problems outside the scope of that method.  Are the reasons to_rust_code() and __str__() are not working, the same?
 #This is a expansion of my last question; am I instantiating my parser functions incorrectly?
-print(str(my_tuple))
+print(my_tuple)
