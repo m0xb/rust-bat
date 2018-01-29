@@ -13,36 +13,19 @@ def build_input(pid):
     #List of tuples containing the expected results for the pid.
     expectation_list = []
     for row in responses:
-        invocation_list.append(bat_scraper_2.get_invocation(row))
-        expectation_list.append(bat_scraper_2.get_expected(row))
+        invocation_list.append(bat_scraper_2.get_invocation(row).to_rust_code())
+        expectation_list.append(bat_scraper_2.get_expected(row).to_rust_code())
     return (fn_name, invocation_list, expectation_list)
 
-print(build_input('p137874'))
+def build_string(input_tuple):
+    master_string = f'printbat!({input_tuple[0]},'
+    for index in range(len(input_tuple[1])):
+        if index < len(input_tuple[1]) - 1:
+            master_string += f'\n    {input_tuple[1][index][1:-1]} => {input_tuple[2][index]},'
+        else:
+            master_string += f'\n    {input_tuple[1][index][1:-1]} => {input_tuple[2][index]});'
+    return master_string
 
-# def build_macro_invocation(args):
-#     macro_invocation = f'''\nprintbat!({args[0]},
-#     '''
-#     #Argument positions in invocation_list which are vecs.
-#     vec_list = []
-#     for index in range(len(args[1][0])):
-#         if isinstance(args[1][0][index], list):
-#             vec_list.append(index)
-#     #Number of tests for a particular pid.
-#     item_count = len(args[1])
-    
-
-
-    # for i in range(item_count):
-    #     for j in tup[1][i]:
-    #         if tup[1][i][j] in vec_list and i < item_count - 1:
-    #             macro_invocation += ''
-    #         elif tup[1][i][j] in vec_list and i == item_count - 1:
-    #             macro_invocation += ''
-
-
-
-
-# How do I deal with functions that take a String as an argument? (if Rust function takes a String, I have to append .to_string() on each literal)
-# How do I del with functions which take a &str as an argument?  (I do not have to append .to_string() on each literal if the function takes a &str'
-
+test = build_input('p105136')
+print(build_string(test))
 

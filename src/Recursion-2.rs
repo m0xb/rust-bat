@@ -180,6 +180,9 @@ fn s53_Helper(nums: &Vec<i32>, five_sum: i32, three_sum: i32, index: usize) -> b
     */
 }
 
+#[macro_use]
+mod bat_formatter;
+
 fn main() {
     //Formatting exercise.
     let groupSum_tests = vec![
@@ -367,6 +370,15 @@ fn main() {
     for i in split53_tests {
         println!("split53: {}", split53(&i));
     }
+
+    printbat!(groupSumClump,
+        0, &vec![2, 4, 8], 10 => true,
+        0, &vec![1, 2, 4, 8, 1], 14 => true,
+        0, &vec![2, 4, 4, 8], 14 => false,
+        0, &vec![8, 2, 2, 1], 9 => true,
+        0, &vec![8, 2, 2, 1], 11 => false,
+        0, &vec![1], 1 => true,
+        0, &vec![9], 1 => false);
 
 
 }

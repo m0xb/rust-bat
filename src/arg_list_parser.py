@@ -1,10 +1,5 @@
-#literal functions
 import re
-import unittest
 
-#AST Enhancement
-
-#This class still does nothing.
 class AstElement:
     pass
 
@@ -14,7 +9,6 @@ class Expression(AstElement):
             return self.__dict__ == other.__dict__
         else:
             return
-
 
 class IntegerLiteral(Expression):
     def __init__(self, intx):
@@ -45,8 +39,7 @@ class CharLiteral(Expression):
          return 'CharLiteral(\'' + str(self.charx) + '\')'
 
     def to_rust_code(self):
-        return f'{self.charx}'
-
+        return '\'' + f'{self.charx}' + '\''
 
 class StringLiteral(Expression):
     def __init__(self, stringx):
@@ -56,7 +49,7 @@ class StringLiteral(Expression):
         return 'StringLiteral("' + self.stringx + '")'
 
     def to_rust_code(self):
-        return f'{self.stringx}'
+        return '"' + f'{self.stringx}' '"'
 
 class BooleanLiteral(Expression):
     def __init__(self, boolx):
@@ -84,7 +77,15 @@ class ArrayLiteral(Expression):
         return string + ')'
 
     def to_rust_code(self):
-        return f'vec!{self.arrayx}'
+        string = 'vec!['
+        count = 0
+        for elem in self.arrayx:
+            if count < len(self.arrayx) - 1:
+                string += elem.to_rust_code() + ', '
+                count += 1
+            else:
+                string += elem.to_rust_code()
+        return string + ']'
 
 class TupleLiteral(Expression):
     def __init__(self, tuplex):
@@ -104,8 +105,15 @@ class TupleLiteral(Expression):
         return string + ')'
 
     def to_rust_code(self):
-        return f'{self.tuplex}'
-
+        string = '('
+        count = 0
+        for elem in self.tuplex:
+            if count < len(self.tuplex) - 1:
+                string += elem.to_rust_code() + ', '
+                count += 1
+            else:
+                string += elem.to_rust_code()
+        return string + ')'
 
 def integer(s, index):
     m = re.match('-?([0-9]+)', s[index:])
@@ -188,7 +196,6 @@ def parse_tuple(s, index):
     else:
         return('ERROR: Not a tuple.', index)
 
-
 def parse_scalar_literal(s, index):
     literal_list = [parse_fn(s, index) for parse_fn in [integer, floating_point, character, string, boolean]]
     largest_index = 0
@@ -211,13 +218,3 @@ def parse_literals(s, index):
         return (value, new_index)
     else:
         return (s, index)
-
-
-
-my_tuple = parse_tuple('(\'a\', "Hello", 1.1, 2, [1, 2, 3.3], true)', 0)
-print(my_tuple[0])
-#I haven't implemented the __str__() method correctly.  I understand from the spec on Google Docs what the __str__() method is supposed to do, but I'm not sure where/how to implement it.  What is a 'concrete' subclass?
-#Outside of practicing with the syntax of inheritance in Python, what does the AstElement class do?  Does its lack of code have anything to do with why I can't get __str__ to work right?
-#to_rust_code() is also not working, but I think this is due to problems outside the scope of that method.  Are the reasons to_rust_code() and __str__() are not working, the same?
-#This is a expansion of my last question; am I instantiating my parser functions incorrectly?
-print(str(my_tuple[0]))

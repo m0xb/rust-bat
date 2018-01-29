@@ -1,9 +1,7 @@
-import unittest
 import re
 import requests
 from bs4 import BeautifulSoup
 import arg_list_parser
-# print("SIM TUPLE: " + str(arg_list_parser.parse_tuple("('sexy boi', 'buggets', 925826, \"\", [], [], [[[[[[]]]]]], [[], []])",0)))
 
 def get_bat(pid):
     response = requests.post(f'http://codingbat.com/prob/{pid}')
@@ -42,7 +40,8 @@ def submit_code(code, pid):
     return row_list[0:-1]
 
 def get_expected(row):
-    return re.search('→ (.*)', row).group(1)
+    expected = re.search('→ (.*)', row).group(1)
+    return arg_list_parser.parse_literals(expected, 0)[0]
 
 def get_fn_name(row):
     return re.search('([^(]*)', row).group(0)

@@ -164,7 +164,6 @@ class TestLiteralFunctions(unittest.TestCase):
             ])
         ]), 26), arg_list_parser.parse_literals('[1, 2, 2, [2, (3, 4,[5])]]', 0))
 
-
 class TestCharLiteral(unittest.TestCase):
     def test_eq(self):
         self.assertTrue(CharLiteral('a') == CharLiteral('a'))
@@ -177,14 +176,19 @@ class TestCharLiteral(unittest.TestCase):
 class Test_to_rust_code(unittest.TestCase):
     def test_stringification(self):
         self.assertEqual('1', arg_list_parser.IntegerLiteral(1).to_rust_code())
-        self.assertEqual('vec![1, 2, 3]', arg_list_parser.ArrayLiteral([1, 2, 3]).to_rust_code())
-        self.assertEqual("Hello", arg_list_parser.StringLiteral("Hello").to_rust_code())
-        self.assertEqual('c', arg_list_parser.CharLiteral('c').to_rust_code())
+        self.assertEqual('vec![1, 2, 3]', arg_list_parser.ArrayLiteral([IntegerLiteral(1), IntegerLiteral(2), IntegerLiteral(3)]).to_rust_code())
+        self.assertEqual('"Hello"', arg_list_parser.StringLiteral("Hello").to_rust_code())
+        self.assertEqual('\'c\'', arg_list_parser.CharLiteral('c').to_rust_code())
         self.assertEqual('1.234', arg_list_parser.FloatLiteral(1.234).to_rust_code())
-        self.assertEqual('(1, 2, 3)', arg_list_parser.TupleLiteral((1, 2, 3)).to_rust_code())
+        self.assertEqual('(1, 2, 3)', arg_list_parser.TupleLiteral((IntegerLiteral(1), IntegerLiteral(2), IntegerLiteral(3))).to_rust_code())
         self.assertEqual('true', arg_list_parser.BooleanLiteral(True).to_rust_code())
 
-
+    def test_complex(self):
+        self.assertEqual('()', arg_list_parser.parse_literals('()', 0)[0].to_rust_code())
+        self.assertEqual('vec![]', arg_list_parser.parse_literals('[]', 0)[0].to_rust_code())
+        self.assertEqual('(1, 2, 3)', arg_list_parser.parse_literals('(1, 2, 3)', 0)[0].to_rust_code())
+        self.assertEqual('vec![1, 2, 3]', arg_list_parser.parse_literals('[1, 2, 3]', 0)[0].to_rust_code())
+        self.assertEqual('vec![(1, 2, 3), vec![1, 2, "Hello"], 2, 3, 4, \'a\']', arg_list_parser.parse_literals('[(1, 2, 3), [1, 2, "Hello"], 2, 3, 4, \'a\']', 0)[0].to_rust_code())
 
 class TestStr(unittest.TestCase):
     def test_str(self):
@@ -196,15 +200,10 @@ class TestStr(unittest.TestCase):
         self.assertEqual('CharLiteral(\'a\')', str(CharLiteral('a')))
         self.assertEqual('FloatLiteral(1.1)', str(FloatLiteral(1.1)))
 
-
-
     def test_complex(self):
         self.assertEqual('ArrayLiteral(StringLiteral("Hello"))', str(arg_list_parser.array('["Hello"]', 0)[0]))
-
         my_tuple = arg_list_parser.parse_tuple('(1, 2.2, [2, "Hello"])', 0)
         self.assertEqual('TupleLiteral(IntegerLiteral(1), FloatLiteral(2.2), ArrayLiteral(IntegerLiteral(2), StringLiteral("Hello")))', str(my_tuple[0]))
-
-
 
 if __name__ == '__main__':
     unittest.main()
