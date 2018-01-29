@@ -19,12 +19,14 @@ def build_input(pid):
 
 def build_string(input_tuple):
     master_string = f'printbat!({input_tuple[0]},'
-    for index in range(len(input_tuple[1])):
+    index = 0
+    while index < len(input_tuple[1]):
         if index < len(input_tuple[1]) - 1:
             master_string += f'\n    {input_tuple[1][index][1:-1]} => {input_tuple[2][index]},'
+            index += 1
         else:
             master_string += f'\n    {input_tuple[1][index][1:-1]} => {input_tuple[2][index]});'
-    return master_string
+            return master_string
 
 test = build_input('p105136')
 print(build_string(test))
