@@ -3,11 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 import arg_list_parser
 
-#Might refactor to use a single regex, though still with two list comprehensions.
 def get_pids_names(sec_name):
     page = requests.get(f'http://codingbat.com/java/{sec_name}').text
-    pids = [x[6:-1] + x[-1] for x in re.findall('(/prob/p[0-9]*)', page)]
-    names = [x[15:-1] + x[-1] for x in re.findall('(/prob/p[0-9]*\'>[^<]*)', page)]
+    pids = re.findall('/prob/(p[0-9]*)', page)
+    names = re.findall('/prob/p[0-9]*\'>([^<]*)', page)
     return (pids, names)
 
 def get_bat(pid):
@@ -20,12 +19,14 @@ def get_type(text):
 
 def generate_return(type):
     generic_type_dict = {'int': 'return 0;',
-                         'String': 'String xcv = "hello"; return xcv;',
+                         'String': 'return "hello";',
                          'String[]': 'String[] vcy = {"Hello"}; return vcy;',
                          'int[]': 'int[] hlax = {0}; return hlax;',
                          'boolean': 'return true;',
-                         'List<Integer>': 'List<Integer> halb = new ArrayList<Integer>(); return halb;',
-                         'List<String>': 'List<String> xlah = new ArrayList<String>(); return xlah;',
+                         'List<Integer>': 'return new ArrayList<Integer>();',
+                         'List<String>': 'return new ArrayList<String>();',
+                         'List<char>': 'return new ArrayList<char>();',
+                         'List<boolean>': 'return new ArrayList<boolean>();',
                          'char': 'char bbc = \'a\'; return bbc;',
                          'char[]': 'char[] alm = {\'a\'}; return alm;',
                          'boolean[]': 'boolean[] axv = {true}; return axv;',
@@ -60,5 +61,4 @@ def get_fn_name(row):
 def get_invocation(row):
     inv = re.search('(\(.*\))', row).group(1)
     return arg_list_parser.parse_literals(inv, 0)[0]
-
 
