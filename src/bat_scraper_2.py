@@ -20,17 +20,17 @@ def get_type(text):
 
 def generate_return(type):
     generic_type_dict = {'int': 'return 0;',
-                         'String': 'String a = "hello"; return a;',
-                         'String[]': 'String[] a = {"Hello"}; return a;',
-                         'int[]': 'int[] a = {0}; return a;',
+                         'String': 'String xcv = "hello"; return xcv;',
+                         'String[]': 'String[] vcy = {"Hello"}; return vcy;',
+                         'int[]': 'int[] hlax = {0}; return hlax;',
                          'boolean': 'return true;',
-                         'List<Integer>': 'List<Integer> a = new ArrayList<Integer>(); return a;',
-                         'List<String>': 'List<String> a = new ArrayList<String>(); return a;',
-                         'char': 'char a = \'a\'; return a;',
-                         'char[]': 'char[] a = {\'a\'}; return a;',
-                         'boolean[]': 'boolean[] a = {true}; return a;',
-                         'float': 'a = 2.0; return a;',
-                         'float[]': 'float[] a = {2.0}; return a;'}
+                         'List<Integer>': 'List<Integer> halb = new ArrayList<Integer>(); return halb;',
+                         'List<String>': 'List<String> xlah = new ArrayList<String>(); return xlah;',
+                         'char': 'char bbc = \'a\'; return bbc;',
+                         'char[]': 'char[] alm = {\'a\'}; return alm;',
+                         'boolean[]': 'boolean[] axv = {true}; return axv;',
+                         'float': 'bnm = 2.0; return bnm;',
+                         'float[]': 'float[] bcy = {2.0}; return bcy;'}
     return generic_type_dict[type]
 
 def generate_code(text, return_statement):
@@ -38,13 +38,17 @@ def generate_code(text, return_statement):
 
 def submit_code(code, pid):
     response = requests.post('http://codingbat.com/run', data={"id": pid, 'code':code})
+    # print(response.text)
     soup = BeautifulSoup(response.text, 'html.parser')
     rows = soup.select('div table tr')
     row_list = []
     for row in list(rows)[1:]:
         invocation_td = next(row.children)
         row_list.append(invocation_td.text.strip())
-    return row_list[0:-1]
+    if len(row_list) == 1:
+        return row_list
+    else:
+        return row_list[0:-1]
 
 def get_expected(row):
     expected = re.search('→ (.*)', row).group(1)
@@ -57,5 +61,4 @@ def get_invocation(row):
     inv = re.search('(\(.*\))', row).group(1)
     return arg_list_parser.parse_literals(inv, 0)[0]
 
-# test = get_pids_names('String-2')
-# print(test)
+

@@ -1,9 +1,11 @@
 import bat_scraper_2
+import sys
 
 def run_all(sec_name):
     master_tup = bat_scraper_2.get_pids_names(sec_name)
     for prob in master_tup[0]:
         print(build_string(build_input(prob)))
+        print('println!();\n')
 
 def build_input(pid):
     #bat, type and signature are used to build the code variable, which in turn will be submitted to CodingBats to get the results table.
@@ -34,4 +36,4 @@ def build_string(input_tuple):
             master_string += f'\n    {input_tuple[1][index][1:-1]} => {input_tuple[2][index]});'
             return master_string + '\n'
 
-run_all('String-3')
+run_all(sys.argv[1])
