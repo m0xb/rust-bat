@@ -53,11 +53,11 @@ macro_rules! printbat {
 
     if correct == total {
     println!("\x1B[32m OK: {} / {} \n", correct, total,);
-    print!("\x1B[0mm");
+    print!("\x1B[0m");
 }
     else {
     println!("\x1B[31m FAILURES: {} / {}, you missed: {} \n", correct, total, total - correct);
-    print!("\x1B[0mm");
+    print!("\x1B[0m");
     }
 }
 }
