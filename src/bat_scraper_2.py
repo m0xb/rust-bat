@@ -3,6 +3,13 @@ import requests
 from bs4 import BeautifulSoup
 import arg_list_parser
 
+#Might refactor to use a single regex, though still with two list comprehensions.
+def get_pids_names(sec_name):
+    page = requests.get(f'http://codingbat.com/java/{sec_name}').text
+    pids = [x[6:-1] + x[-1] for x in re.findall('(/prob/p[0-9]*)', page)]
+    names = [x[15:-1] + x[-1] for x in re.findall('(/prob/p[0-9]*\'>[^<]*)', page)]
+    return (pids, names)
+
 def get_bat(pid):
     response = requests.post(f'http://codingbat.com/prob/{pid}')
     return BeautifulSoup(response.text, 'html.parser').select('#ace_div')[0].text
@@ -50,7 +57,5 @@ def get_invocation(row):
     inv = re.search('(\(.*\))', row).group(1)
     return arg_list_parser.parse_literals(inv, 0)[0]
 
-
-
-
-
+# test = get_pids_names('String-2')
+# print(test)
