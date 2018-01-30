@@ -20,8 +20,8 @@ def get_type(text):
 def generate_return(type):
     generic_type_dict = {'int': 'return 0;',
                          'String': 'return "hello";',
-                         'String[]': 'String[] vcy = {"Hello"}; return vcy;',
-                         'int[]': 'int[] hlax = {0}; return hlax;',
+                         'String[]': 'return new String[]{};',
+                         'int[]': 'return new int[]{};',
                          'boolean': 'return true;',
                          'List<Integer>': 'return new ArrayList<Integer>();',
                          'List<String>': 'return new ArrayList<String>();',
