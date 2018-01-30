@@ -40,7 +40,7 @@ fn main() {
     printbat!(doubling,
     vec![1, 2, 3] => vec![2, 4, 6],
     vec![6, 8, 6, 8, -1] => vec![12, 16, 12, 16, -2],
-    vec![] => vec![],
+    Vec::<i32>::new() => Vec::<i32>::new(),
     vec![5] => vec![10],
     vec![5, 10] => vec![10, 20],
     vec![8, -5, 7, 3, 109] => vec![16, -10, 14, 6, 218],
@@ -52,7 +52,7 @@ fn main() {
     printbat!(square,
     vec![1, 2, 3] => vec![1, 4, 9],
     vec![6, 8, -6, -8, 1] => vec![36, 64, 36, 64, 1],
-    vec![] => vec![],
+    Vec::<i32>::new() => Vec::<i32>::new(),
     vec![12] => vec![144],
     vec![5, 10] => vec![25, 100],
     vec![6, -3, 12, 23, 4, 1, 19, 11, 2, 3, 2] => vec![36, 9, 144, 529, 16, 1, 361, 121, 4, 9, 4]);
@@ -63,7 +63,7 @@ fn main() {
     vec!["a", "bb", "ccc"] => vec!["a*", "bb*", "ccc*"],
     vec!["hello", "there"] => vec!["hello*", "there*"],
     vec!["*"] => vec!["**"],
-    vec![] => vec![],
+    Vec::<&str>::new() => Vec::<&str>::new(),
     vec!["kittens", "and", "chocolate", "and"] => vec!["kittens*", "and*", "chocolate*", "and*"],
     vec!["empty", "string", ""] => vec!["empty*", "string*", "*"]);
 
@@ -74,7 +74,7 @@ fn main() {
     vec!["24", "a", ""] => vec!["242424", "aaa", ""],
     vec!["hello", "there"] => vec!["hellohellohello", "theretherethere"],
     vec!["no"] => vec!["nonono"],
-    vec![] => vec![],
+    Vec::<&str>::new() => Vec::<&str>::new(),
     vec!["this", "and", "that", "and"] => vec!["thisthisthis", "andandand", "thatthatthat", "andandand"]);
 
     println!();
@@ -84,7 +84,7 @@ fn main() {
     vec!["hello", "there"] => vec!["yhelloy", "ytherey"],
     vec!["yay"] => vec!["yyayy"],
     vec!["", "a", "xx"] => vec!["yy", "yay", "yxxy"],
-    vec![] => vec![],
+    Vec::<&str>::new() => Vec::<&str>::new(),
     vec!["xx", "yy", "zz"] => vec!["yxxy", "yyyy", "yzzy"]);
 
     println!();
@@ -93,7 +93,7 @@ fn main() {
     vec![1, 2, 3] => vec![20, 30, 40],
     vec![6, 8, 6, 8, 1] => vec![70, 90, 70, 90, 20],
     vec![10] => vec![110],
-    vec![] => vec![],
+    Vec::<i32>::new() => Vec::<i32>::new(),
     vec![5, 10] => vec![60, 110],
     vec![-1, -2, -3, -2, -1] => vec![0, -10, -20, -10, 0],
     vec![6, -3, 12, 23, 4, 1, 19, 11, 2, 3, 2] => vec![70, -20, 130, 240, 50, 20, 200, 120, 30, 40, 30]);
@@ -104,7 +104,7 @@ fn main() {
     vec![1, 22, 93] => vec![1, 2, 3],
     vec![16, 8, 886, 8, 1] => vec![6, 8, 6, 8, 1],
     vec![10, 0] => vec![0, 0],
-    vec![] => vec![],
+    Vec::<i32>::new() => Vec::<i32>::new(),
     vec![5, 10] => vec![5, 0],
     vec![5, 50, 500, 5000, 5000] => vec![5, 0, 0, 0, 0],
     vec![6, 23, 12, 23, 4, 1, 19, 1119, 2, 3, 2] => vec![6, 3, 2, 3, 4, 1, 9, 9, 2, 3, 2]);
@@ -115,7 +115,7 @@ fn main() {
     vec!["Hello", "Hi"] => vec!["hello", "hi"],
     vec!["AAA", "BBB", "ccc"] => vec!["aaa", "bbb", "ccc"],
     vec!["KitteN", "ChocolaTE"] => vec!["kitten", "chocolate"],
-    vec![] => vec![],
+    Vec::<&str>::new() => Vec::<&str>::new(),
     vec!["EMPTY", ""] => vec!["empty", ""],
     vec!["aaX", "bYb", "Ycc", "ZZZ"] => vec!["aax", "byb", "ycc", "zzz"]);
 
@@ -126,10 +126,11 @@ fn main() {
     vec!["xxax", "xbxbx", "xxcx"] => vec!["a", "bb", "c"],
     vec!["x"] => vec![""],
     vec![""] => vec![""],
-    vec![] => vec![],
+    Vec::<&str>::new() => Vec::<&str>::new(),
     vec!["the", "taxi"] => vec!["the", "tai"],
     vec!["the", "xxtxaxixxx"] => vec!["the", "tai"],
     vec!["this", "is", "the", "x"] => vec!["this", "is", "the", ""]);
+
 
 //    let doubling_tests = vec![
 //    vec![1, 2, 3],

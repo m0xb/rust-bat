@@ -77,15 +77,18 @@ class ArrayLiteral(Expression):
         return string + ')'
 
     def to_rust_code(self):
-        string = 'vec!['
-        count = 0
-        for elem in self.arrayx:
-            if count < len(self.arrayx) - 1:
-                string += elem.to_rust_code() + ', '
-                count += 1
-            else:
-                string += elem.to_rust_code()
-        return string + ']'
+        if len(self.arrayx) > 0:
+            string = 'vec!['
+            count = 0
+            for elem in self.arrayx:
+                if count < len(self.arrayx) - 1:
+                    string += elem.to_rust_code() + ', '
+                    count += 1
+                else:
+                    string += elem.to_rust_code()
+            return string + ']'
+        else:
+            return 'Vec::<>::new()'
 
 class TupleLiteral(Expression):
     def __init__(self, tuplex):
