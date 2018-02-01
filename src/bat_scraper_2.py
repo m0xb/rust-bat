@@ -13,12 +13,26 @@ def get_bat(pid):
     response = requests.post(f'http://codingbat.com/prob/{pid}')
     return BeautifulSoup(response.text, 'html.parser').select('#ace_div')[0].text
 
-def get_type(text):
+def get_return_type(text):
     my_reg = re.search('(public|private|protected) ((static|final) )?([0-9a-zA-Z<>\[\]]*) ', text)
     return my_reg.group(4)
 
+def get_invocation_types(text):
+    inner = text[text.index('(') + 1:text.index(')')].split(', ')
+    generic_type_list = ['List<Integer>', 'List<String>', 'List<char>', 'List<boolean>', 'boolean', 'String[]', 'float[]', 'String', 'char[]', 'float', 'int[]', 'char', 'int']
+    local_type_list = []
+    for parameter in inner:
+        for item in generic_type_list:
+            if parameter[0:len(item)] in generic_type_list:
+                local_type_list.append(parameter[0:len(item)])
+                break
+    return local_type_list
+
+#Iterate through inner, generate comma separated list of types.
+#If any types are array based,
+
 def generate_return(type):
-    generic_type_dict = {'int': 'return 0;',
+    generic_return_dict = {'int': 'return 0;',
                          'String': 'return "hello";',
                          'String[]': 'return new String[]{};',
                          'int[]': 'return new int[]{};',
@@ -32,7 +46,7 @@ def generate_return(type):
                          'boolean[]': 'boolean[] axv = {true}; return axv;',
                          'float': 'bnm = 2.0; return bnm;',
                          'float[]': 'float[] bcy = {2.0}; return bcy;'}
-    return generic_type_dict[type]
+    return generic_return_dict[type]
 
 def generate_code(text, return_statement):
     return text[0:text.index('}')] + return_statement + '}'
