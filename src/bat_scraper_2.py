@@ -45,7 +45,8 @@ def generate_return(type):
                          'char[]': 'char[] alm = {\'a\'}; return alm;',
                          'boolean[]': 'boolean[] axv = {true}; return axv;',
                          'float': 'bnm = 2.0; return bnm;',
-                         'float[]': 'float[] bcy = {2.0}; return bcy;'}
+                         'float[]': 'float[] bcy = {2.0}; return bcy;',
+                         'List': 'return null;'}
     return generic_return_dict[type]
 
 def generate_code(text, return_statement):

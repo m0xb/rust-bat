@@ -422,6 +422,7 @@ fn evenOdd(array: Vec<i32>) -> Vec<i32> {
 #[macro_use]
 mod bat_formatter;
 fn main() {
+
     printbat!(countEvens,
     vec![2, 1, 2, 3, 4] => 3,
     vec![2, 2, 0] => 3,
