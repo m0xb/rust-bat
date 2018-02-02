@@ -49,7 +49,7 @@ def fill_type_param(type_param, generic_type):
         'boolean[]': 'bool',
         'char[]': 'char',
         'float[]': 'f32',
-        'String[]': '&str'
+        'String[]': '&str',
     }
     if isinstance(generic_type, ArrayLiteral):
         # assign the argument to a variable with a different name, for clarity
